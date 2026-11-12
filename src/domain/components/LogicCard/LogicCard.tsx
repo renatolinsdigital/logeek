@@ -1,7 +1,7 @@
 import { useEffect, useId, useRef } from 'react';
 import { Button, showToast } from '@/shared/components';
 import type { LogicCard as LogicCardModel, Variable } from '@/domain/models';
-import type { CardRunState } from '@/domain/logic';
+import { describeCardTitle, type CardRunState } from '@/domain/logic';
 import { useBoardStore } from '@/domain/store';
 import { ConditionGroupEditor } from '../ConditionGroupEditor';
 import styles from './LogicCard.module.scss';
@@ -41,7 +41,7 @@ function LogicCard({
   const articleRef = useRef<HTMLElement>(null);
   const titleRef = useRef<HTMLInputElement>(null);
   const thenId = useId();
-  const displayTitle = card.title.trim() || 'Untitled card';
+  const displayTitle = describeCardTitle(card);
 
   useEffect(() => {
     if (!shouldFocusTitle) return;

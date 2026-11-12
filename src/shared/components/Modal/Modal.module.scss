@@ -8,7 +8,7 @@
   padding: 0;
   overflow: auto;
   color: $color-ink;
-  @include slab($color-paper, 8px 8px 0 $color-pink);
+  @include slab($color-paper, 8px 8px 0 var(--modal-shadow-color, #{$color-pink}));
 
   &[open] {
     animation: pop-in 160ms steps(4) both;

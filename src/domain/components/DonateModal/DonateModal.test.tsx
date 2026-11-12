@@ -72,4 +72,28 @@ describe('DonateModal', () => {
     await expect(navigator.clipboard.readText()).resolves.toBe(PAYPAL_EMAIL);
     expect(screen.getByRole('button', { name: 'Copied' })).toBeInTheDocument();
   });
+
+  it('selects the address for a manual copy when the browser blocks copying', async () => {
+    const user = userEvent.setup();
+    vi.spyOn(navigator.clipboard, 'writeText').mockRejectedValue(new Error('denied'));
+    render(<DonateModal onClose={() => {}} />);
+
+    await user.click(screen.getByRole('button', { name: 'Copy' }));
+
+    const emailField = screen.getByLabelText('Or send any amount by PayPal to');
+    expect(emailField).toHaveFocus();
+    expect(screen.getByRole('status')).toHaveTextContent(
+      'The browser blocked copying, so the address is selected: press your copy shortcut.',
+    );
+  });
+
+  it('closes when the donation is dismissed', async () => {
+    const user = userEvent.setup();
+    const handleClose = vi.fn();
+    render(<DonateModal onClose={handleClose} />);
+
+    await user.click(screen.getByRole('button', { name: 'Close donation' }));
+
+    expect(handleClose).toHaveBeenCalledOnce();
+  });
 });

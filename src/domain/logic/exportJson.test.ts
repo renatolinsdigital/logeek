@@ -1,7 +1,5 @@
 import { describe, expect, it } from 'vitest';
 import type { Board } from '@/domain/models';
-import { buildVariableLookup } from './evaluate';
-import { describeGroup, describeGroupLines } from './describe';
 import { createExampleBoard } from './examples';
 import { formatBoardJson, toJsonLogic, toLogeekJson } from './exportJson';
 
@@ -104,26 +102,65 @@ describe('toJsonLogic', () => {
   });
 });
 
+describe('unreadable conditions', () => {
+  const board: Board = {
+    variables: [{ id: 'v1', name: 'speed', type: 'number', sample: '' }],
+    otherwise: 'stay',
+    cards: [
+      {
+        id: 'c1',
+        title: 'Odd',
+        color: 'pink',
+        then: 'go',
+        when: {
+          id: 'g1',
+          kind: 'group',
+          match: 'any',
+          items: [
+            { id: 'k1', kind: 'condition', variableId: 'v1', operator: '>', value: 'fast' },
+            { id: 'k2', kind: 'condition', variableId: 'v_gone', operator: '>', value: '1' },
+            { id: 'g2', kind: 'group', match: 'all', items: [] },
+            { id: 'g3', kind: 'group', match: 'any', items: [] },
+          ],
+        },
+      },
+    ],
+  };
+
+  it('exports an unreadable value as null and a missing variable with no name', () => {
+    expect(toLogeekJson(board).decisions[0]?.if).toEqual({
+      any: [
+        { variable: 'speed', operator: '>', value: null },
+        { variable: '', operator: '>', value: null },
+        { all: [] },
+        { any: [] },
+      ],
+    });
+  });
+
+  it('writes empty groups as true for all and false for any in JsonLogic', () => {
+    expect(toJsonLogic(board)).toEqual({
+      if: [
+        {
+          or: [{ '>': [{ var: 'speed' }, null] }, { '>': [{ var: '' }, null] }, true, false],
+        },
+        'go',
+        'stay',
+      ],
+    });
+  });
+});
+
 describe('formatBoardJson', () => {
   it('prints compact JSON on one line', () => {
     expect(formatBoardJson(createExampleBoard(), 'logeek', true)).not.toContain('\n');
     expect(formatBoardJson(createExampleBoard(), 'logeek', false)).toContain('\n  ');
   });
-});
 
-describe('describeGroup', () => {
-  it('reads a card as a person would say it', () => {
+  it('prints the chosen format', () => {
     const board = createExampleBoard();
-    const variableLookup = buildVariableLookup(board.variables);
-    const bonusCard = board.cards[2];
-    if (!bonusCard) throw new Error('the example board has three cards');
 
-    expect(describeGroup(bonusCard.when, variableLookup)).toBe(
-      'hasTicket is true OR (country is "BR" AND coins > 10)',
-    );
-    expect(describeGroupLines(bonusCard.when, variableLookup)).toEqual([
-      'hasTicket is true',
-      'OR (country is "BR" AND coins > 10)',
-    ]);
+    expect(JSON.parse(formatBoardJson(board, 'jsonlogic', true))).toEqual(toJsonLogic(board));
+    expect(JSON.parse(formatBoardJson(board, 'logeek', true))).toEqual(toLogeekJson(board));
   });
 });

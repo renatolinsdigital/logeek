@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { Panel, PixelIcon } from '@/shared/components';
-import { runBoard } from '@/domain/logic';
+import { describeAnswer, describeCardTitle, runBoard } from '@/domain/logic';
 import { useBoard } from '@/domain/store';
 import { Flowchart } from '../Flowchart';
 import { TestRunInputs } from '../TestRunInputs';
@@ -13,8 +13,8 @@ import styles from './FlowchartPanel.module.scss';
 function FlowchartPanel() {
   const board = useBoard();
   const run = useMemo(() => runBoard(board), [board]);
-  const matchedPosition = board.cards.findIndex((card) => card.id === run.matchedCardId) + 1;
-  const matchedCard = board.cards[matchedPosition - 1];
+  const matchedIndex = board.cards.findIndex((card) => card.id === run.matchedCardId);
+  const matchedCard = board.cards[matchedIndex];
 
   return (
     <Panel
@@ -32,12 +32,10 @@ function FlowchartPanel() {
             <PixelIcon name="play" size={24} className={styles.resultIcon} />
             <span className={styles.resultText}>
               <span className={styles.resultLabel}>Answer</span>
-              <strong className={styles.resultValue}>
-                {run.outcome.trim() || '(no answer yet)'}
-              </strong>
+              <strong className={styles.resultValue}>{describeAnswer(run.outcome)}</strong>
               <span className={styles.resultSource}>
                 {matchedCard
-                  ? `from card #${matchedPosition}, ${matchedCard.title.trim() || 'Untitled card'}`
+                  ? `from card #${matchedIndex + 1}, ${describeCardTitle(matchedCard)}`
                   : 'no card passed, so the fallback answers'}
               </span>
             </span>

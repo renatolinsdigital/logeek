@@ -2,9 +2,9 @@ import { decodeBase64Url, encodeBase64Url } from '@/lib/base64Url';
 import { createId } from '@/lib/createId';
 import { isRecord } from '@/lib/isRecord';
 import {
-  CARD_COLORS,
+  getCardColor,
+  isCardColor,
   type Board,
-  type CardColor,
   type ConditionGroup,
   type LogicCard,
   type LogicNode,
@@ -21,8 +21,6 @@ export const BOARD_LIMITS = {
   groupDepth: 4,
   textLength: 300,
 } as const;
-
-const OPERATORS: readonly Operator[] = ['>', '>=', '<', '<=', '==', '!=', 'contains'];
 
 class InvalidBoardError extends Error {}
 
@@ -52,12 +50,13 @@ function readVariables(input: unknown): { variables: Variable[]; idMap: Map<stri
   const variables = readArray(input, 'variables', BOARD_LIMITS.variables).map((entry) => {
     if (!isRecord(entry)) throw new InvalidBoardError('a variable must be an object');
     const name = readText(entry.name, 'variable name');
+    const nameKey = name.toLowerCase();
     const type = entry.type as VariableType;
-    if (!VARIABLE_NAME_PATTERN.test(name) || seenNames.has(name.toLowerCase())) {
+    if (!VARIABLE_NAME_PATTERN.test(name) || seenNames.has(nameKey)) {
       throw new InvalidBoardError(`variable name ${name} is invalid or repeated`);
     }
     if (!VARIABLE_TYPES.includes(type)) throw new InvalidBoardError(`unknown type for ${name}`);
-    seenNames.add(name.toLowerCase());
+    seenNames.add(nameKey);
 
     const variable: Variable = {
       id: createId('variable'),
@@ -80,7 +79,7 @@ function readNode(input: unknown, idMap: Map<string, Variable>, depth: number): 
   const variable = idMap.get(readText(input.variableId, 'condition variable'));
   const operator = input.operator as Operator;
   if (!variable) throw new InvalidBoardError('a condition points at a missing variable');
-  if (!OPERATORS.includes(operator) || !isOperatorAllowed(operator, variable.type)) {
+  if (!isOperatorAllowed(operator, variable.type)) {
     throw new InvalidBoardError(`operator ${String(operator)} does not fit ${variable.name}`);
   }
   return {
@@ -111,13 +110,10 @@ function readGroup(input: unknown, idMap: Map<string, Variable>, depth: number):
 
 function readCard(input: unknown, idMap: Map<string, Variable>): LogicCard {
   if (!isRecord(input)) throw new InvalidBoardError('a card must be an object');
-  const color = CARD_COLORS.includes(input.color as CardColor)
-    ? (input.color as CardColor)
-    : 'pink';
   return {
     id: createId('card'),
     title: readText(input.title, 'card title'),
-    color,
+    color: isCardColor(input.color) ? input.color : getCardColor(0),
     when: readGroup(input.when, idMap, 1),
     then: readText(input.then, 'card answer'),
   };

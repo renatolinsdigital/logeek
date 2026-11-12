@@ -27,11 +27,15 @@ Depth: `{boilerplate}/guides/frontend/react.md`,
 - `ConditionRow` lays itself out with a container query, because the same
   row sits in a wide card on desktop and inside a nested group on a phone.
 - Undo for removing a card uses the store's `lastRemovedCard`; Undo for
-  Examples, Clear and a loaded share link keeps a board snapshot and calls
-  `loadBoard`.
+  Examples, Clear, a JSON import and a loaded share link goes through
+  `replaceBoardWithUndo` (`domain/store`), which keeps a board snapshot and
+  calls `loadBoard`.
 - `Modal` is open while mounted (render it conditionally) and sits on the
   native `<dialog>`. jsdom has no `showModal` or `close`, so
   `src/test/setup.ts` stubs them; a test finds it with `getByRole('dialog')`.
+- Calling `blur()` inside a key handler runs `onBlur` before React
+  re-renders, so `onBlur` still sees the old state. A cancel meant for it
+  goes through a ref (`VariableChip`'s Escape does).
 - A child's focus effect inside `Modal` runs after the dialog opens (the
   Modal opens in a layout effect), which is how `JsonImportForm` focuses its
   field.

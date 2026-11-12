@@ -68,7 +68,12 @@ function DonateModal({ onClose }: DonateModalProps) {
   };
 
   return (
-    <Modal title="Support Logeek" closeLabel="Close donation" onClose={onClose}>
+    <Modal
+      title="Support Logeek"
+      closeLabel="Close donation"
+      onClose={onClose}
+      className={styles.frame}
+    >
       <div className={styles.body}>
         <div className={styles.lead}>
           <p className={styles.headline}>Keep Logeek free</p>

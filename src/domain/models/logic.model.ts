@@ -36,6 +36,15 @@ export const CARD_COLORS = ['pink', 'cyan', 'lime', 'yellow', 'orange', 'violet'
 
 export type CardColor = (typeof CARD_COLORS)[number];
 
+export function isCardColor(input: unknown): input is CardColor {
+  return CARD_COLORS.includes(input as CardColor);
+}
+
+/** The palette colour at any position, wrapping around: cards take the colours in turn. */
+export function getCardColor(position: number): CardColor {
+  return CARD_COLORS[position % CARD_COLORS.length] ?? CARD_COLORS[0];
+}
+
 /** One decision: when its conditions pass, the board answers with `then`. */
 export interface LogicCard {
   id: string;

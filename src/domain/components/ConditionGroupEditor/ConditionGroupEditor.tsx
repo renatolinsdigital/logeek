@@ -2,6 +2,7 @@ import { Fragment } from 'react';
 import { Button, SegmentedControl } from '@/shared/components';
 import { classNames } from '@/lib/classNames';
 import type { ConditionGroup, GroupMatch, Variable } from '@/domain/models';
+import { getJoinWord } from '@/domain/logic';
 import { useBoardStore } from '@/domain/store';
 import { ConditionRow } from '../ConditionRow';
 import styles from './ConditionGroupEditor.module.scss';
@@ -19,6 +20,11 @@ const MATCH_OPTIONS = [
   { value: 'any', label: 'Any' },
 ] as const;
 
+const NESTED_EMPTY_TEXT: Record<GroupMatch, string> = {
+  all: 'Empty group: always passes.',
+  any: 'Empty group: never passes.',
+};
+
 /** A list of conditions joined by AND (all) or OR (any). The card's root may hold one level of groups. */
 function ConditionGroupEditor({
   cardId,
@@ -31,15 +37,13 @@ function ConditionGroupEditor({
   const addGroup = useBoardStore((state) => state.addGroup);
   const removeNode = useBoardStore((state) => state.removeNode);
   const hasVariables = variables.length > 0;
-  const joinWord = group.match === 'all' ? 'AND' : 'OR';
+  const joinWord = getJoinWord(group.match);
   const emptyText = isRoot
     ? 'No conditions: this card always passes.'
-    : group.match === 'all'
-      ? 'Empty group: always passes.'
-      : 'Empty group: never passes.';
+    : NESTED_EMPTY_TEXT[group.match];
 
   return (
-    <div className={classNames(styles.group, !isRoot && styles.nested)} data-match={group.match}>
+    <div className={classNames(styles.group, !isRoot && styles.nested)}>
       <div className={styles.header}>
         <span className={styles.keyword}>{isRoot ? 'If' : 'Group'}</span>
         <SegmentedControl<GroupMatch>

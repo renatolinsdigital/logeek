@@ -1,7 +1,8 @@
 import { useEffect, useId, useRef, useState, type FormEvent } from 'react';
-import { Button, showToast } from '@/shared/components';
+import { Button } from '@/shared/components';
+import { pluralize } from '@/lib/pluralize';
 import { parseLogeekJson } from '@/domain/logic';
-import { selectBoard, useBoardStore } from '@/domain/store';
+import { replaceBoardWithUndo } from '@/domain/store';
 import styles from './JsonImportForm.module.scss';
 
 export interface JsonImportFormProps {
@@ -11,7 +12,6 @@ export interface JsonImportFormProps {
 
 /** Rebuilds the board from pasted Logeek JSON, with Undo in the toast. */
 function JsonImportForm({ onClose }: JsonImportFormProps) {
-  const loadBoard = useBoardStore((state) => state.loadBoard);
   const [jsonText, setJsonText] = useState('');
   const [importError, setImportError] = useState<string | null>(null);
   const fieldRef = useRef<HTMLTextAreaElement>(null);
@@ -34,13 +34,8 @@ function JsonImportForm({ onClose }: JsonImportFormProps) {
       return;
     }
 
-    const previousBoard = selectBoard(useBoardStore.getState());
-    loadBoard(board);
+    replaceBoardWithUndo(board, `Imported ${pluralize(board.cards.length, 'card')} from JSON.`);
     onClose();
-    const cardCount = board.cards.length === 1 ? '1 card' : `${board.cards.length} cards`;
-    showToast(`Imported ${cardCount} from JSON.`, {
-      action: { label: 'Undo', onAction: () => useBoardStore.getState().loadBoard(previousBoard) },
-    });
   };
 
   return (

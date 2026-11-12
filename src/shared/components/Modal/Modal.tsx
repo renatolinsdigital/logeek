@@ -1,4 +1,5 @@
 import { useId, useLayoutEffect, useRef, type ReactNode } from 'react';
+import { classNames } from '@/lib/classNames';
 import { Button } from '../Button';
 import styles from './Modal.module.scss';
 
@@ -7,6 +8,8 @@ export interface ModalProps {
   /** The close button shows only an icon, so this names it for screen readers. */
   closeLabel: string;
   onClose: () => void;
+  /** Extra class on the dialog. Setting `--modal-shadow-color` there recolours the offset shadow. */
+  className?: string;
   children: ReactNode;
 }
 
@@ -15,7 +18,7 @@ export interface ModalProps {
  * stays inside and Escape closes it. It is open while mounted, so the caller
  * renders it conditionally and its contents start fresh every time.
  */
-function Modal({ title, closeLabel, onClose, children }: ModalProps) {
+function Modal({ title, closeLabel, onClose, className, children }: ModalProps) {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const titleId = useId();
 
@@ -35,7 +38,7 @@ function Modal({ title, closeLabel, onClose, children }: ModalProps) {
   return (
     <dialog
       ref={dialogRef}
-      className={styles.modal}
+      className={classNames(styles.modal, className)}
       aria-labelledby={titleId}
       onCancel={(event) => {
         // The caller decides when the dialog goes, by unmounting it.

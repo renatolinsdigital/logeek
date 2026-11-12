@@ -3,7 +3,7 @@ import { classNames } from '@/lib/classNames';
 import { PixelIcon, type PixelIconName } from '../PixelIcon';
 import styles from './Button.module.scss';
 
-export type ButtonVariant = 'primary' | 'secondary' | 'danger' | 'ghost' | 'crt';
+export type ButtonVariant = 'primary' | 'secondary' | 'danger' | 'ghost';
 export type ButtonSize = 'md' | 'sm';
 
 export interface ButtonProps extends ComponentProps<'button'> {

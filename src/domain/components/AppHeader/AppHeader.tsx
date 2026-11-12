@@ -1,7 +1,8 @@
 import markUrl from '@/assets/logeek-mark.svg';
-import { Button, showToast } from '@/shared/components';
+import { Button } from '@/shared/components';
+import { createExampleBoard } from '@/domain/logic';
 import { useCopyShareLink } from '@/domain/hooks';
-import { selectBoard, useBoardStore } from '@/domain/store';
+import { createEmptyBoard, replaceBoardWithUndo } from '@/domain/store';
 import styles from './AppHeader.module.scss';
 
 const STEPS = [
@@ -13,15 +14,6 @@ const STEPS = [
 /** The title screen: brand, the three steps, and the board-wide actions. */
 function AppHeader() {
   const copyShareLink = useCopyShareLink();
-
-  // Both actions replace the whole board, so each keeps a snapshot for Undo.
-  const replaceBoard = (action: 'resetToExamples' | 'clearBoard', message: string) => {
-    const previousBoard = selectBoard(useBoardStore.getState());
-    useBoardStore.getState()[action]();
-    showToast(message, {
-      action: { label: 'Undo', onAction: () => useBoardStore.getState().loadBoard(previousBoard) },
-    });
-  };
 
   return (
     <header className={styles.header}>
@@ -45,14 +37,14 @@ function AppHeader() {
           </Button>
           <Button
             icon="reset"
-            onClick={() => replaceBoard('resetToExamples', 'Example cards loaded.')}
+            onClick={() => replaceBoardWithUndo(createExampleBoard(), 'Example cards loaded.')}
           >
             Examples
           </Button>
           <Button
             variant="danger"
             icon="trash"
-            onClick={() => replaceBoard('clearBoard', 'Board cleared. Fresh start!')}
+            onClick={() => replaceBoardWithUndo(createEmptyBoard(), 'Board cleared. Fresh start!')}
           >
             Clear
           </Button>

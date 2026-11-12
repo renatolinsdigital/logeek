@@ -1,6 +1,10 @@
 @use 'theme' as *;
 @use 'mixins' as *;
 
+.frame {
+  --modal-shadow-color: #{$color-cyan};
+}
+
 .body {
   display: grid;
   gap: $space-4;
@@ -8,7 +12,8 @@
 
 .lead {
   padding: $space-4;
-  @include slab($color-pink, $shadow-small);
+  color: $color-crt-text;
+  @include slab($color-crt, $shadow-small);
 }
 
 .headline {

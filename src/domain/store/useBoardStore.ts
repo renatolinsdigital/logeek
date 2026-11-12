@@ -3,6 +3,7 @@ import { createJSONStorage, persist } from 'zustand/middleware';
 import { createId } from '@/lib/createId';
 import {
   CARD_COLORS,
+  getCardColor,
   type Board,
   type Condition,
   type ConditionGroup,
@@ -14,9 +15,10 @@ import {
 } from '@/domain/models';
 import {
   appendNode,
+  buildVariableLookup,
   cloneWithNewIds,
   collectConditions,
-  createExampleBoard,
+  countVariableUses,
   getDefaultOperator,
   getDefaultValue,
   isOperatorAllowed,
@@ -56,9 +58,8 @@ interface BoardActions {
   removeNode: (cardId: string, nodeId: string) => void;
 
   setOtherwise: (otherwise: string) => void;
+  /** Replaces the whole board (examples, a clear, an import, a share link, an Undo). */
   loadBoard: (board: Board) => void;
-  resetToExamples: () => void;
-  clearBoard: () => void;
   setJsonFormat: (format: JsonFormat) => void;
   setJsonCompact: (isCompact: boolean) => void;
 }
@@ -68,16 +69,12 @@ export interface BoardState extends BoardData, BoardActions {
   lastRemovedCard: { card: LogicCard; index: number } | null;
 }
 
-function createEmptyBoard(): Board {
+export function createEmptyBoard(): Board {
   return { variables: [], cards: [], otherwise: '' };
 }
 
 export function createInitialBoardData(): BoardData {
   return { ...createEmptyBoard(), jsonFormat: 'logeek', isJsonCompact: false };
-}
-
-function createEmptyGroup(match: GroupMatch = 'all'): ConditionGroup {
-  return { id: createId('group'), kind: 'group', match, items: [] };
 }
 
 function createCondition(variable: Variable): Condition {
@@ -90,11 +87,27 @@ function createCondition(variable: Variable): Condition {
   };
 }
 
-/** Counts the conditions, across every card, that read this variable. */
-export function countVariableUses(cards: readonly LogicCard[], variableId: string): number {
-  return cards
-    .flatMap((card) => collectConditions(card.when))
-    .filter((condition) => condition.variableId === variableId).length;
+function patchVariable(
+  variables: readonly Variable[],
+  variableId: string,
+  patch: Partial<Omit<Variable, 'id'>>,
+): Variable[] {
+  return variables.map((variable) =>
+    variable.id === variableId ? { ...variable, ...patch } : variable,
+  );
+}
+
+/** A new group, holding one condition on the first variable when there is one. */
+function createStarterGroup(
+  match: GroupMatch,
+  firstVariable: Variable | undefined,
+): ConditionGroup {
+  return {
+    id: createId('group'),
+    kind: 'group',
+    match,
+    items: firstVariable ? [createCondition(firstVariable)] : [],
+  };
 }
 
 export const useBoardStore = create<BoardState>()(
@@ -123,21 +136,16 @@ export const useBoardStore = create<BoardState>()(
           })),
 
         renameVariable: (variableId, name) =>
-          set((state) => ({
-            variables: state.variables.map((variable) =>
-              variable.id === variableId ? { ...variable, name } : variable,
-            ),
-          })),
+          set((state) => ({ variables: patchVariable(state.variables, variableId, { name }) })),
 
         // A new type invalidates the old values, so every condition on the
         // variable starts over with the new type's defaults.
         changeVariableType: (variableId, type) =>
           set((state) => ({
-            variables: state.variables.map((variable) =>
-              variable.id === variableId
-                ? { ...variable, type, sample: getDefaultValue(type) }
-                : variable,
-            ),
+            variables: patchVariable(state.variables, variableId, {
+              type,
+              sample: getDefaultValue(type),
+            }),
             cards: state.cards.map((card) => ({
               ...card,
               when: mapConditions(card.when, (condition) =>
@@ -153,11 +161,7 @@ export const useBoardStore = create<BoardState>()(
           })),
 
         setVariableSample: (variableId, sample) =>
-          set((state) => ({
-            variables: state.variables.map((variable) =>
-              variable.id === variableId ? { ...variable, sample } : variable,
-            ),
-          })),
+          set((state) => ({ variables: patchVariable(state.variables, variableId, { sample }) })),
 
         removeVariable: (variableId) => {
           if (countVariableUses(get().cards, variableId) > 0) return;
@@ -168,15 +172,11 @@ export const useBoardStore = create<BoardState>()(
 
         addCard: () => {
           const { cards, variables } = get();
-          const [firstVariable] = variables;
-          const rootGroup = createEmptyGroup();
-          if (firstVariable) rootGroup.items.push(createCondition(firstVariable));
-
           const newCard: LogicCard = {
             id: createId('card'),
             title: `Card ${cards.length + 1}`,
-            color: CARD_COLORS[cards.length % CARD_COLORS.length] ?? 'pink',
-            when: rootGroup,
+            color: getCardColor(cards.length),
+            when: createStarterGroup('all', variables[0]),
             then: '',
           };
           set({ cards: [...cards, newCard] });
@@ -186,10 +186,10 @@ export const useBoardStore = create<BoardState>()(
         updateCard: (cardId, patch) => updateCardById(cardId, (card) => ({ ...card, ...patch })),
 
         cycleCardColor: (cardId) =>
-          updateCardById(cardId, (card) => {
-            const colorIndex = CARD_COLORS.indexOf(card.color);
-            return { ...card, color: CARD_COLORS[(colorIndex + 1) % CARD_COLORS.length] ?? 'pink' };
-          }),
+          updateCardById(cardId, (card) => ({
+            ...card,
+            color: getCardColor(CARD_COLORS.indexOf(card.color) + 1),
+          })),
 
         duplicateCard: (cardId) =>
           set((state) => {
@@ -255,16 +255,12 @@ export const useBoardStore = create<BoardState>()(
         },
 
         addGroup: (cardId) => {
-          const [firstVariable] = get().variables;
-          const newGroup = createEmptyGroup('any');
-          if (firstVariable) newGroup.items.push(createCondition(firstVariable));
+          const newGroup = createStarterGroup('any', get().variables[0]);
           updateCardTree(cardId, (rootGroup) => appendNode(rootGroup, rootGroup.id, newGroup));
         },
 
         updateCondition: (cardId, conditionId, patch) => {
-          const variableLookup = new Map(
-            get().variables.map((variable) => [variable.id, variable]),
-          );
+          const variableLookup = buildVariableLookup(get().variables);
           updateCardTree(cardId, (rootGroup) =>
             updateNode(rootGroup, conditionId, (node) => {
               if (node.kind !== 'condition') return node;
@@ -297,10 +293,6 @@ export const useBoardStore = create<BoardState>()(
         setOtherwise: (otherwise) => set({ otherwise }),
 
         loadBoard: (board) => set({ ...board, lastRemovedCard: null }),
-
-        resetToExamples: () => set({ ...createExampleBoard(), lastRemovedCard: null }),
-
-        clearBoard: () => set({ ...createEmptyBoard(), lastRemovedCard: null }),
 
         setJsonFormat: (jsonFormat) => set({ jsonFormat }),
 

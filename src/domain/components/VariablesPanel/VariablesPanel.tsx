@@ -1,8 +1,13 @@
 import { useId, useState, type FormEvent } from 'react';
 import { Button, Panel } from '@/shared/components';
 import type { VariableType } from '@/domain/models';
-import { VARIABLE_TYPE_LABELS, VARIABLE_TYPES, validateVariableName } from '@/domain/logic';
-import { countVariableUses, useBoardStore } from '@/domain/store';
+import {
+  countVariableUses,
+  VARIABLE_TYPE_LABELS,
+  VARIABLE_TYPES,
+  validateVariableName,
+} from '@/domain/logic';
+import { useBoardStore } from '@/domain/store';
 import { VariableChip } from '../VariableChip';
 import styles from './VariablesPanel.module.scss';
 

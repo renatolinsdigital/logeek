@@ -1,5 +1,5 @@
 import { isRecord } from '@/lib/isRecord';
-import { CARD_COLORS, type VariableType } from '@/domain/models';
+import { getCardColor, type VariableType } from '@/domain/models';
 import { BOARD_LIMITS, checkBoard, type BoardCheck } from './boardCodec';
 import { getDefaultValue, VARIABLE_TYPES } from './operators';
 
@@ -13,14 +13,16 @@ function toTypedText(value: unknown): unknown {
   return value;
 }
 
+function isGroupNode(node: unknown): boolean {
+  return isRecord(node) && ('all' in node || 'any' in node);
+}
+
 function toBoardNode(node: unknown, depth: number): unknown {
   if (!isRecord(node)) throw new InvalidDocumentError('a condition must be an object');
-  const hasAll = 'all' in node;
-  const hasAny = 'any' in node;
-  if (hasAll && hasAny) {
+  if ('all' in node && 'any' in node) {
     throw new InvalidDocumentError('a group must hold either all or any, not both');
   }
-  if (hasAll || hasAny) return toBoardGroup(node, depth + 1);
+  if (isGroupNode(node)) return toBoardGroup(node, depth + 1);
   return {
     kind: 'condition',
     variableId: node.variable,
@@ -42,9 +44,7 @@ function toBoardGroup(group: Record<string, unknown>, depth: number): unknown {
 // The export always wraps a decision in a group; a hand-written single
 // condition is accepted as a group of one.
 function toRootGroup(condition: unknown): unknown {
-  if (isRecord(condition) && ('all' in condition || 'any' in condition)) {
-    return toBoardNode(condition, 0);
-  }
+  if (isGroupNode(condition)) return toBoardNode(condition, 0);
   return { kind: 'group', match: 'all', items: [toBoardNode(condition, 1)] };
 }
 
@@ -71,7 +71,7 @@ function toBoardCards(decisions: unknown): unknown[] {
     }
     return {
       title: decision.name,
-      color: CARD_COLORS[decisionIndex % CARD_COLORS.length],
+      color: getCardColor(decisionIndex),
       when: toRootGroup(decision.if),
       then: decision.then,
     };

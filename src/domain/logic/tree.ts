@@ -1,4 +1,4 @@
-import type { Condition, ConditionGroup, LogicNode } from '@/domain/models';
+import type { Condition, ConditionGroup, LogicCard, LogicNode } from '@/domain/models';
 
 function mapNode(
   node: LogicNode,
@@ -55,6 +55,13 @@ export function collectConditions(rootGroup: ConditionGroup): Condition[] {
   return rootGroup.items.flatMap((child) =>
     child.kind === 'group' ? collectConditions(child) : [child],
   );
+}
+
+/** Counts the conditions, across every card, that read this variable. */
+export function countVariableUses(cards: readonly LogicCard[], variableId: string): number {
+  return cards
+    .flatMap((card) => collectConditions(card.when))
+    .filter((condition) => condition.variableId === variableId).length;
 }
 
 /** Copies a tree, giving every node a fresh id, for a duplicated card. */

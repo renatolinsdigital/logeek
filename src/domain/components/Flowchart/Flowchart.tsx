@@ -2,6 +2,8 @@ import { useMemo } from 'react';
 import type { Board } from '@/domain/models';
 import {
   buildVariableLookup,
+  describeAnswer,
+  describeCardTitle,
   describeGroupLines,
   getCardRunState,
   type BoardRun,
@@ -49,7 +51,7 @@ function Flowchart({ board, run }: FlowchartProps) {
                 <p className={styles.decisionTitle}>
                   <span className={styles.diamond} aria-hidden="true" />
                   <span>
-                    #{cardIndex + 1} {card.title.trim() || 'Untitled card'}
+                    #{cardIndex + 1} {describeCardTitle(card)}
                   </span>
                 </p>
                 <ul className={styles.question} aria-label="Conditions">
@@ -68,7 +70,7 @@ function Flowchart({ board, run }: FlowchartProps) {
               </div>
               <div className={styles.outcome} data-lit={isMatch}>
                 <span className={styles.outcomeLabel}>Then</span>
-                {card.then.trim() || '(no answer yet)'}
+                {describeAnswer(card.then)}
               </div>
             </div>
           </li>

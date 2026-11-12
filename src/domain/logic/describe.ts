@@ -1,6 +1,28 @@
-import type { Condition, ConditionGroup, VariableType } from '@/domain/models';
+import type {
+  Condition,
+  ConditionGroup,
+  GroupMatch,
+  LogicCard,
+  LogicNode,
+  VariableType,
+} from '@/domain/models';
 import type { VariableLookup } from './evaluate';
 import { getOperatorLabel } from './operators';
+
+/** The card's title as shown, or a placeholder while it has none. */
+export function describeCardTitle(card: LogicCard): string {
+  return card.title.trim() || 'Untitled card';
+}
+
+/** A card's answer (or the test run's outcome) as shown, or a placeholder while it is blank. */
+export function describeAnswer(answer: string): string {
+  return answer.trim() || '(no answer yet)';
+}
+
+/** The word that joins a group's items: AND for `all`, OR for `any`. */
+export function getJoinWord(match: GroupMatch): 'AND' | 'OR' {
+  return match === 'all' ? 'AND' : 'OR';
+}
 
 function describeValue(rawValue: string, variableType: VariableType): string {
   if (variableType === 'text') return JSON.stringify(rawValue);
@@ -15,8 +37,10 @@ export function describeCondition(condition: Condition, variableLookup: Variable
   return `${variable.name} ${operatorLabel} ${describeValue(condition.value, variable.type)}`;
 }
 
-function getJoinWord(group: ConditionGroup): string {
-  return group.match === 'all' ? 'AND' : 'OR';
+function describeItem(item: LogicNode, variableLookup: VariableLookup): string {
+  return item.kind === 'group'
+    ? describeGroup(item, variableLookup, true)
+    : describeCondition(item, variableLookup);
 }
 
 export function describeGroup(
@@ -26,12 +50,9 @@ export function describeGroup(
 ): string {
   if (group.items.length === 0) return group.match === 'all' ? 'always' : 'never';
 
-  const itemTexts = group.items.map((item) =>
-    item.kind === 'group'
-      ? describeGroup(item, variableLookup, true)
-      : describeCondition(item, variableLookup),
-  );
-  const joinedText = itemTexts.join(` ${getJoinWord(group)} `);
+  const joinedText = group.items
+    .map((item) => describeItem(item, variableLookup))
+    .join(` ${getJoinWord(group.match)} `);
   return isNested && group.items.length > 1 ? `(${joinedText})` : joinedText;
 }
 
@@ -46,10 +67,7 @@ export function describeGroupLines(
   if (group.items.length === 0) return [describeGroup(group, variableLookup)];
 
   return group.items.map((item, itemIndex) => {
-    const itemText =
-      item.kind === 'group'
-        ? describeGroup(item, variableLookup, true)
-        : describeCondition(item, variableLookup);
-    return itemIndex === 0 ? itemText : `${getJoinWord(group)} ${itemText}`;
+    const itemText = describeItem(item, variableLookup);
+    return itemIndex === 0 ? itemText : `${getJoinWord(group.match)} ${itemText}`;
   });
 }

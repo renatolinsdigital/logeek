@@ -1,5 +1,6 @@
-import { useState, type KeyboardEvent } from 'react';
+import { useRef, useState, type KeyboardEvent } from 'react';
 import { Button, showToast } from '@/shared/components';
+import { pluralize } from '@/lib/pluralize';
 import type { Variable, VariableType } from '@/domain/models';
 import { VARIABLE_TYPE_LABELS, VARIABLE_TYPES, validateVariableName } from '@/domain/logic';
 import { useBoardStore } from '@/domain/store';
@@ -12,17 +13,25 @@ export interface VariableChipProps {
   useCount: number;
 }
 
+const TYPE_TAGS: Record<VariableType, string> = { number: '#', text: 'Aa', boolean: '?' };
+
 /** One variable: its name (renamed in place), its type and how many conditions use it. */
 function VariableChip({ variable, variables, useCount }: VariableChipProps) {
   const renameVariable = useBoardStore((state) => state.renameVariable);
   const changeVariableType = useBoardStore((state) => state.changeVariableType);
   const removeVariable = useBoardStore((state) => state.removeVariable);
   const [draftName, setDraftName] = useState<string | null>(null);
+  // blur() inside the Escape handler runs onBlur before React re-renders, so
+  // the cancel has to reach commitName through a ref, not through state.
+  const isCancellingRef = useRef(false);
 
   const commitName = () => {
-    if (draftName === null) return;
-    const nextName = draftName.trim();
+    const isCancelled = isCancellingRef.current;
+    isCancellingRef.current = false;
     setDraftName(null);
+    if (isCancelled || draftName === null) return;
+
+    const nextName = draftName.trim();
     if (nextName === variable.name) return;
 
     const nameError = validateVariableName(nextName, variables, variable.id);
@@ -36,7 +45,7 @@ function VariableChip({ variable, variables, useCount }: VariableChipProps) {
   const handleNameKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') event.currentTarget.blur();
     if (event.key === 'Escape') {
-      setDraftName(null);
+      isCancellingRef.current = true;
       event.currentTarget.blur();
     }
   };
@@ -44,21 +53,22 @@ function VariableChip({ variable, variables, useCount }: VariableChipProps) {
   const handleTypeChange = (nextType: VariableType) => {
     changeVariableType(variable.id, nextType);
     if (useCount > 0) {
+      const resetConditions = `${pluralize(useCount, 'condition')} ${useCount === 1 ? 'was' : 'were'}`;
       showToast(
-        `${variable.name} is now ${VARIABLE_TYPE_LABELS[nextType]}: its ${useCount} condition${useCount === 1 ? ' was' : 's were'} reset.`,
+        `${variable.name} is now ${VARIABLE_TYPE_LABELS[nextType]}: its ${resetConditions} reset.`,
       );
     }
   };
 
   const removeLabel =
     useCount > 0
-      ? `${variable.name} is used by ${useCount} condition${useCount === 1 ? '' : 's'}: remove those first`
+      ? `${variable.name} is used by ${pluralize(useCount, 'condition')}: remove those first`
       : `Remove ${variable.name}`;
 
   return (
     <li className={styles.chip} data-type={variable.type}>
       <span className={styles.typeTag} aria-hidden="true">
-        {variable.type === 'number' ? '#' : variable.type === 'text' ? 'Aa' : '?'}
+        {TYPE_TAGS[variable.type]}
       </span>
       <input
         className={styles.name}

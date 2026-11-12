@@ -105,6 +105,30 @@ describe('parseLogeekJson', () => {
         JSON.stringify({ variables: { speed: 'number' }, decisions: {}, otherwise: '' }),
         'decisions must be a list',
       ],
+      [
+        JSON.stringify({ variables: ['speed'], decisions: [], otherwise: '' }),
+        'variables must be an object of names and types',
+      ],
+      [
+        JSON.stringify({ variables: { speed: 'number' }, decisions: ['Fast'], otherwise: '' }),
+        'a decision must be an object',
+      ],
+      [
+        JSON.stringify({
+          variables: { speed: 'number' },
+          decisions: [{ name: 'Fast', then: 'Go' }],
+          otherwise: '',
+        }),
+        'decision 1 has no if',
+      ],
+      [documentWith({ any: ['speed'] }), 'a condition must be an object'],
+      [
+        JSON.stringify({
+          variables: { speed: 'number' },
+          decisions: [{ name: 'Fast', if: { all: [] }, then: 'Go' }],
+        }),
+        'otherwise must be text of 300 characters or fewer',
+      ],
     ];
 
     for (const [jsonText, expectedError] of cases) {

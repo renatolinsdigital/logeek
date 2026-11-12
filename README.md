@@ -9,7 +9,7 @@
 ![Tests](https://img.shields.io/badge/tests-Vitest-6e9f18?logo=vitest&logoColor=white)
 ![No backend](https://img.shields.io/badge/backend-none-ff3fa4)
 
-![Logeek: variables, a logic card and the live flowchart with a test run](docs/print/app_print.png)
+![Logeek: variables, a logic card and the live flowchart with a test run](docs/print/print.png)
 
 Logeek is a visual rule builder with an 80s arcade look. Name the facts a
 system knows, stack cards like `age >= 18 AND has_ticket is true`, and get

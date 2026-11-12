@@ -1,7 +1,7 @@
 import { useCallback, useEffect } from 'react';
 import { showToast } from '@/shared/components';
 import { decodeBoard, encodeBoard, SHARE_HASH_PREFIX } from '@/domain/logic';
-import { selectBoard, useBoardStore } from '@/domain/store';
+import { replaceBoardWithUndo, selectBoard, useBoardStore } from '@/domain/store';
 
 function buildShareUrl(): string {
   const board = selectBoard(useBoardStore.getState());
@@ -39,13 +39,6 @@ export function useLoadSharedBoard(): void {
       return;
     }
 
-    const previousBoard = selectBoard(useBoardStore.getState());
-    useBoardStore.getState().loadBoard(sharedBoard);
-    showToast('Shared board loaded.', {
-      action: {
-        label: 'Undo',
-        onAction: () => useBoardStore.getState().loadBoard(previousBoard),
-      },
-    });
+    replaceBoardWithUndo(sharedBoard, 'Shared board loaded.');
   }, []);
 }

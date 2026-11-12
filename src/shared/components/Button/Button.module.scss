@@ -76,18 +76,3 @@
     box-shadow: $shadow-pressed;
   }
 }
-
-.crt {
-  color: $color-crt-text;
-  background: $color-crt-raised;
-  border-color: $color-crt-text;
-  box-shadow: 3px 3px 0 $color-pink;
-
-  &:hover:not(:disabled) {
-    box-shadow: 4px 4px 0 $color-pink;
-  }
-
-  &:active:not(:disabled) {
-    box-shadow: 1px 1px 0 $color-pink;
-  }
-}
