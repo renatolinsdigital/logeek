@@ -1,0 +1,56 @@
+@use 'theme' as *;
+@use 'mixins' as *;
+
+.form {
+  display: grid;
+  gap: $space-3;
+}
+
+.label {
+  @include pixel-label(0.5625rem);
+}
+
+.hint {
+  margin: 0;
+  color: $color-muted;
+  font-size: $text-sm;
+}
+
+.field {
+  width: 100%;
+  min-height: 14rem;
+  padding: $space-3;
+  resize: vertical;
+  font-family: $font-body;
+  font-size: $text-sm;
+  color: $color-crt-text;
+  background: $color-crt;
+  border: $border;
+  @include focus-ring;
+
+  &::placeholder {
+    color: $color-crt-dim;
+  }
+
+  &[aria-invalid='true'] {
+    border-color: $color-red;
+    box-shadow: 3px 3px 0 $color-red;
+  }
+}
+
+.error {
+  margin: 0;
+  font-weight: 700;
+
+  &::before {
+    content: '! ';
+    color: $color-red;
+  }
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: $space-3;
+}

@@ -44,6 +44,9 @@ Logeek gives the whole team one shared picture of the logic:
 - **Two JSON formats**: the readable Logeek format, or a single
   [JsonLogic](https://jsonlogic.com) rule that any JsonLogic library can run.
   Pretty or compact, with Copy and Download.
+- **Import JSON**: paste Logeek JSON (from this app or written by hand) into
+  the Import dialog of the JSON panel and the cards are rebuilt from it, with
+  Undo. Colours and test values start fresh, since the format has neither.
 - **Share link**: the whole board (cards, variables, test values) packed into
   a URL. Nothing is uploaded: the board travels inside the link.
 - **Saved automatically** in your browser. Removing a card, clearing the

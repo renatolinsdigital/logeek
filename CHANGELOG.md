@@ -22,6 +22,9 @@ the exported JSON, a minor one adds a feature, and a patch fixes a bug.
   path taken by the values typed in.
 - JSON output in the Logeek format or as one JsonLogic rule, pretty or
   compact, with Copy and Download.
+- Import JSON: an Import button on the JSON panel opens a dialog where
+  pasted Logeek JSON rebuilds the cards and variables, with Undo, and a
+  refused paste says what does not fit.
 - Share links that carry the whole board in the URL, and automatic saving
   in the browser.
 - The colourful brutalist, 80s arcade look, with the author credit and logo

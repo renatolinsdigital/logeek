@@ -1,5 +1,6 @@
 import { decodeBase64Url, encodeBase64Url } from '@/lib/base64Url';
 import { createId } from '@/lib/createId';
+import { isRecord } from '@/lib/isRecord';
 import {
   CARD_COLORS,
   type Board,
@@ -13,7 +14,7 @@ import {
 } from '@/domain/models';
 import { isOperatorAllowed, VARIABLE_NAME_PATTERN, VARIABLE_TYPES } from './operators';
 
-const LIMITS = {
+export const BOARD_LIMITS = {
   variables: 60,
   cards: 120,
   itemsPerGroup: 60,
@@ -25,14 +26,13 @@ const OPERATORS: readonly Operator[] = ['>', '>=', '<', '<=', '==', '!=', 'conta
 
 class InvalidBoardError extends Error {}
 
-function isRecord(input: unknown): input is Record<string, unknown> {
-  return typeof input === 'object' && input !== null && !Array.isArray(input);
-}
+/** A checked board, or why the input could not become one. */
+export type BoardCheck = { board: Board; error: null } | { board: null; error: string };
 
 function readText(input: unknown, fieldName: string): string {
-  if (typeof input !== 'string' || input.length > LIMITS.textLength) {
+  if (typeof input !== 'string' || input.length > BOARD_LIMITS.textLength) {
     throw new InvalidBoardError(
-      `${fieldName} must be text of ${LIMITS.textLength} characters or fewer`,
+      `${fieldName} must be text of ${BOARD_LIMITS.textLength} characters or fewer`,
     );
   }
   return input;
@@ -49,7 +49,7 @@ function readVariables(input: unknown): { variables: Variable[]; idMap: Map<stri
   const idMap = new Map<string, Variable>();
   const seenNames = new Set<string>();
 
-  const variables = readArray(input, 'variables', LIMITS.variables).map((entry) => {
+  const variables = readArray(input, 'variables', BOARD_LIMITS.variables).map((entry) => {
     if (!isRecord(entry)) throw new InvalidBoardError('a variable must be an object');
     const name = readText(entry.name, 'variable name');
     const type = entry.type as VariableType;
@@ -93,7 +93,7 @@ function readNode(input: unknown, idMap: Map<string, Variable>, depth: number): 
 }
 
 function readGroup(input: unknown, idMap: Map<string, Variable>, depth: number): ConditionGroup {
-  if (!isRecord(input) || depth > LIMITS.groupDepth) {
+  if (!isRecord(input) || depth > BOARD_LIMITS.groupDepth) {
     throw new InvalidBoardError('groups are nested too deep or malformed');
   }
   if (input.match !== 'all' && input.match !== 'any') {
@@ -103,7 +103,7 @@ function readGroup(input: unknown, idMap: Map<string, Variable>, depth: number):
     id: createId('group'),
     kind: 'group',
     match: input.match,
-    items: readArray(input.items, 'group items', LIMITS.itemsPerGroup).map((item) =>
+    items: readArray(input.items, 'group items', BOARD_LIMITS.itemsPerGroup).map((item) =>
       readNode(item, idMap, depth),
     ),
   };
@@ -124,21 +124,28 @@ function readCard(input: unknown, idMap: Map<string, Variable>): LogicCard {
 }
 
 /**
- * Checks untrusted input (a shared link, saved storage) and rebuilds it as a
- * board with fresh ids. Returns null when anything does not fit.
+ * Checks untrusted input (a shared link, saved storage, imported JSON) and
+ * rebuilds it as a board with fresh ids, or says the first thing that does
+ * not fit.
  */
-export function parseBoard(input: unknown): Board | null {
+export function checkBoard(input: unknown): BoardCheck {
   try {
-    if (!isRecord(input)) return null;
+    if (!isRecord(input)) throw new InvalidBoardError('a board must be an object');
     const { variables, idMap } = readVariables(input.variables);
-    const cards = readArray(input.cards, 'cards', LIMITS.cards).map((card) =>
+    const cards = readArray(input.cards, 'cards', BOARD_LIMITS.cards).map((card) =>
       readCard(card, idMap),
     );
-    return { variables, cards, otherwise: readText(input.otherwise, 'otherwise') };
+    const board = { variables, cards, otherwise: readText(input.otherwise, 'otherwise') };
+    return { board, error: null };
   } catch (error) {
-    if (error instanceof InvalidBoardError) return null;
+    if (error instanceof InvalidBoardError) return { board: null, error: error.message };
     throw error;
   }
+}
+
+/** `checkBoard` for callers that only need to know whether it fits. */
+export function parseBoard(input: unknown): Board | null {
+  return checkBoard(input).board;
 }
 
 export const SHARE_HASH_PREFIX = '#board=';

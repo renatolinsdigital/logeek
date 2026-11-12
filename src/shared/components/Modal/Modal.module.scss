@@ -1,0 +1,51 @@
+@use 'theme' as *;
+@use 'mixins' as *;
+
+.modal {
+  width: min(42rem, calc(100% - #{$space-6}));
+  max-width: none;
+  max-height: calc(100dvh - #{$space-6});
+  padding: 0;
+  overflow: auto;
+  color: $color-ink;
+  @include slab($color-paper, 8px 8px 0 $color-pink);
+
+  &[open] {
+    animation: pop-in 160ms steps(4) both;
+  }
+
+  &::backdrop {
+    background: translucent($color-ink, 0.72);
+  }
+}
+
+.header {
+  position: sticky;
+  top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: $space-3;
+  padding: $space-3 $space-4;
+  border-bottom: $border;
+  background: $color-yellow;
+}
+
+.title {
+  @include pixel-label($text-sm);
+}
+
+.body {
+  padding: $space-4;
+
+  @include respond-to(md) {
+    padding: $space-5;
+  }
+}
+
+@keyframes pop-in {
+  from {
+    transform: translateY(12px) scale(0.96);
+    opacity: 0;
+  }
+}

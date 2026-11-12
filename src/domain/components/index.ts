@@ -5,6 +5,7 @@ export * from './ConditionGroupEditor';
 export * from './ConditionRow';
 export * from './Flowchart';
 export * from './FlowchartPanel';
+export * from './ImportJsonModal';
 export * from './JsonPanel';
 export * from './LogicCard';
 export * from './TestRunInputs';

@@ -26,12 +26,12 @@ src
   pages/BuilderPage          the one screen; composes the domain panels
     -> domain/               knows logic cards
          models/             Board, Variable, LogicCard, Condition, ConditionGroup
-         logic/              pure: operators, evaluate, describe, exportJson, boardCodec, examples
+         logic/              pure: operators, evaluate, describe, exportJson, importJson, boardCodec, examples
          store/              Zustand store and the useBoard selector
          hooks/              share links in and out
-         components/         panels, cards, condition editors, flowchart, JSON panel
-      -> shared/components   generic: Button, Panel, SegmentedControl, Toast, JsonCode, PixelIcon
-        -> lib/              pure helpers: createId, classNames, base64Url, jsonTokens
+         components/         panels, cards, condition editors, flowchart, JSON panel, import dialog
+      -> shared/components   generic: Button, Panel, SegmentedControl, Toast, Modal, JsonCode, PixelIcon
+        -> lib/              pure helpers: createId, classNames, base64Url, isRecord, jsonTokens
 ```
 
 Imports point down this list only.
@@ -58,13 +58,21 @@ the variable's type, so a half-typed number never breaks the board.
 Both are a contract with whoever copies them: a change to their shape is a
 major version.
 
+The Logeek format also goes back in: `parseLogeekJson` (`importJson.ts`)
+turns a pasted document into the board shape and hands it to `checkBoard`.
+JsonLogic does not, since it carries no card names or variable types.
+
+A share link does not carry either format. It carries the board itself (ids,
+card colours, test values, nested groups) as JSON, base64url encoded, which
+is why a link restores colours and test values and an import does not.
+
 ## Data
 
 No personal data is stored. A board is saved in the browser's localStorage
 (`logeek-board`) and shared by putting it, base64url encoded, in the URL
-fragment (`#board=...`), which browsers never send to a server. Both pass
-`parseBoard`, which checks the shape and size and rebuilds every id, before
-reaching the store.
+fragment (`#board=...`), which browsers never send to a server. Both, and
+imported JSON, pass `checkBoard` (or `parseBoard`, its yes or no form), which
+checks the shape and size and rebuilds every id, before reaching the store.
 
 | Store | Holds | Why this store |
 | --- | --- | --- |

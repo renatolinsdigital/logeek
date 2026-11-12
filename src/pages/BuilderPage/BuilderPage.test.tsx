@@ -85,6 +85,58 @@ describe('BuilderPage', () => {
     expect(jsonLogicRegion).not.toHaveTextContent('"decisions"');
   });
 
+  it('rebuilds the cards from pasted Logeek JSON and brings the old board back with Undo', async () => {
+    const user = userEvent.setup();
+    render(<BuilderPage />);
+    const importedJson = JSON.stringify({
+      variables: { score: 'number' },
+      decisions: [
+        {
+          name: 'High score',
+          if: { all: [{ variable: 'score', operator: '>', value: 90 }] },
+          then: 'Gold',
+        },
+      ],
+      otherwise: 'Try again',
+    });
+
+    await user.click(screen.getByRole('button', { name: 'Import' }));
+    const dialog = screen.getByRole('dialog', { name: 'Import JSON' });
+    const jsonField = within(dialog).getByLabelText('Logeek JSON');
+    expect(jsonField).toHaveFocus();
+    await user.click(jsonField);
+    await user.paste(importedJson);
+    await user.click(within(dialog).getByRole('button', { name: 'Import cards' }));
+
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+    expect(screen.getAllByRole('article')).toHaveLength(1);
+    expect(screen.getByRole('article', { name: 'Card 1: High score' })).toBeInTheDocument();
+    expect(screen.getByText('Imported 1 card from JSON.')).toBeInTheDocument();
+
+    await user.click(screen.getByRole('button', { name: 'Undo' }));
+    expect(screen.getAllByRole('article')).toHaveLength(3);
+  });
+
+  it('keeps the import open and says why when the JSON does not fit', async () => {
+    const user = userEvent.setup();
+    render(<BuilderPage />);
+
+    await user.click(screen.getByRole('button', { name: 'Import' }));
+    const dialog = screen.getByRole('dialog', { name: 'Import JSON' });
+    await user.click(within(dialog).getByLabelText('Logeek JSON'));
+    await user.paste('{ "if": [true, "Go", "Wait"] }');
+    await user.click(within(dialog).getByRole('button', { name: 'Import cards' }));
+
+    expect(within(dialog).getByRole('alert')).toHaveTextContent(
+      'Could not import: this is JsonLogic, which has no card names or variable types (copy the Logeek format instead).',
+    );
+    expect(within(dialog).getByLabelText('Logeek JSON')).toHaveAttribute('aria-invalid', 'true');
+    expect(screen.getAllByRole('article')).toHaveLength(3);
+
+    await user.click(within(dialog).getByRole('button', { name: 'Close import' }));
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+  });
+
   it('credits the author in a new tab', () => {
     render(<BuilderPage />);
 

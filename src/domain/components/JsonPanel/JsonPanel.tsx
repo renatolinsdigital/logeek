@@ -1,8 +1,9 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { Button, JsonCode, Panel, SegmentedControl, showToast } from '@/shared/components';
 import type { JsonFormat } from '@/domain/models';
 import { formatBoardJson } from '@/domain/logic';
 import { useBoard, useBoardStore } from '@/domain/store';
+import { ImportJsonModal } from '../ImportJsonModal';
 import styles from './JsonPanel.module.scss';
 
 const FORMAT_OPTIONS = [
@@ -34,6 +35,7 @@ function JsonPanel() {
   const isJsonCompact = useBoardStore((state) => state.isJsonCompact);
   const setJsonFormat = useBoardStore((state) => state.setJsonFormat);
   const setJsonCompact = useBoardStore((state) => state.setJsonCompact);
+  const [isImportOpen, setIsImportOpen] = useState(false);
   const jsonText = useMemo(
     () => formatBoardJson(board, jsonFormat, isJsonCompact),
     [board, jsonFormat, isJsonCompact],
@@ -83,11 +85,15 @@ function JsonPanel() {
           <Button variant="crt" icon="download" onClick={downloadJson}>
             Download
           </Button>
+          <Button variant="crt" icon="upload" onClick={() => setIsImportOpen(true)}>
+            Import
+          </Button>
         </div>
       </div>
       <div className={styles.screen}>
         <JsonCode jsonText={jsonText} label={`Board as ${jsonFormat} JSON`} />
       </div>
+      {isImportOpen && <ImportJsonModal onClose={() => setIsImportOpen(false)} />}
     </Panel>
   );
 }
