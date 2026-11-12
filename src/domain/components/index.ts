@@ -3,6 +3,7 @@ export * from './AppHeader';
 export * from './CardDeck';
 export * from './ConditionGroupEditor';
 export * from './ConditionRow';
+export * from './DonateModal';
 export * from './Flowchart';
 export * from './FlowchartPanel';
 export * from './JsonExport';

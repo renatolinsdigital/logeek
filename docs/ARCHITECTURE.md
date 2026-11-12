@@ -135,7 +135,8 @@ and all of them use `lib`. `shared` knows nothing about logic cards.
 | `JsonExport` | Cards to JSON: format, layout, Copy, Download |
 | `JsonImportForm` | JSON to cards: paste, check, load with Undo |
 | `FlowchartPanel`, `TestRunInputs`, `Flowchart` | Stage 3: test values, the answer, the lit chart |
-| `AppFooter` | Credits |
+| `AppFooter` | Credits and the Donate button |
+| `DonateModal` | The donation dialog: a PayPal link with the amount filled in, or the address to copy |
 
 ## Data and privacy
 

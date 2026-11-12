@@ -47,8 +47,15 @@
   @include visually-hidden;
 }
 
-.gameOver {
+.support {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: $space-3;
   margin-left: auto;
+}
+
+.supportText {
   color: $color-crt-dim;
   @include pixel-label(0.5rem);
 }

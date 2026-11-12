@@ -69,6 +69,8 @@ who was not in the room. Logeek puts the rule itself on the table:
   sample cards.
 - **Colourful brutalism**: thick borders, hard shadows, pixel fonts, CRT
   screens. Keyboard friendly and labelled for screen readers.
+- **Donate** from the footer: pick or type an amount and PayPal opens with it
+  filled in, or copy the PayPal address.
 
 ## The output
 
@@ -174,6 +176,18 @@ docs/
 | Use every part of the app | [User guide](docs/USER-GUIDE.md) |
 | Understand how the code fits together | [Architecture](docs/ARCHITECTURE.md) |
 | Change the code with an AI assistant | [`AGENTS.md`](AGENTS.md), then `.claude/rules/palace.md` |
+
+## Support Logeek
+
+Logeek is free: no install, no account, no ads. If it saves you time, a
+donation pays for the hours behind the next release.
+
+- **[Donate with PayPal](https://www.paypal.com/donate/?business=renato.digital.crafts%40gmail.com&currency_code=USD&item_name=Support+Logeek)**,
+  any amount.
+- Or send it from your own PayPal app to `renato.digital.crafts@gmail.com`.
+
+The same offer is behind the Donate button in the app's footer. PayPal takes
+the payment, so Logeek never sees your card or account.
 
 ## Credits
 

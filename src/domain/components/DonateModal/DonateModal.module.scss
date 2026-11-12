@@ -1,0 +1,106 @@
+@use 'theme' as *;
+@use 'mixins' as *;
+
+.body {
+  display: grid;
+  gap: $space-4;
+}
+
+.lead {
+  padding: $space-4;
+  @include slab($color-pink, $shadow-small);
+}
+
+.headline {
+  @include pixel-label($text-sm);
+}
+
+.pitch {
+  margin-top: $space-3;
+  line-height: 1.5;
+}
+
+.amounts {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: $space-3;
+}
+
+.amount {
+  min-height: 3.25rem;
+  border: $border;
+  background: $color-white;
+  box-shadow: $shadow-small;
+  transition:
+    transform $transition-fast,
+    box-shadow $transition-fast,
+    background-color $transition-fast;
+  @include pixel-label($text-sm);
+
+  &:hover {
+    transform: translate(-1px, -1px);
+    box-shadow: 4px 4px 0 $color-ink;
+  }
+
+  &:active {
+    transform: translate(2px, 2px);
+    box-shadow: $shadow-pressed;
+  }
+}
+
+// Filled and sunk into its shadow, like a held arcade key: two channels, not just hue.
+.amountActive {
+  background: $color-cyan;
+  transform: translate(2px, 2px);
+  box-shadow: $shadow-pressed;
+
+  &:hover {
+    transform: translate(2px, 2px);
+    box-shadow: $shadow-pressed;
+  }
+}
+
+.field {
+  display: grid;
+  gap: $space-1;
+}
+
+.label {
+  @include pixel-label(0.5625rem);
+}
+
+.input {
+  width: 100%;
+  min-width: 0;
+  min-height: 2.75rem;
+  padding: $space-2 $space-3;
+  border: $border;
+  background: $color-white;
+}
+
+.donate {
+  width: 100%;
+}
+
+.direct {
+  display: grid;
+  gap: $space-2;
+  padding-top: $space-4;
+  border-top: 2px dashed $color-ink;
+}
+
+.emailRow {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: $space-3;
+}
+
+.status:empty {
+  display: none;
+}
+
+.fine {
+  color: $color-muted;
+  font-size: $text-sm;
+  text-align: center;
+}
