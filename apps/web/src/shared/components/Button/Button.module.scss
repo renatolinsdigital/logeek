@@ -1,0 +1,93 @@
+@use 'theme' as *;
+@use 'mixins' as *;
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: $space-2;
+  border: $border;
+  box-shadow: $shadow-small;
+  color: $color-ink;
+  white-space: nowrap;
+  transition:
+    transform $transition-fast,
+    box-shadow $transition-fast,
+    background-color $transition-fast;
+  @include pixel-label(0.625rem);
+
+  &:hover:not(:disabled) {
+    transform: translate(-1px, -1px);
+    box-shadow: 4px 4px 0 $color-ink;
+  }
+
+  &:active:not(:disabled) {
+    transform: translate(2px, 2px);
+    box-shadow: $shadow-pressed;
+  }
+
+  &:disabled {
+    opacity: 0.45;
+    box-shadow: none;
+  }
+}
+
+.md {
+  min-height: 2.75rem;
+  padding: $space-2 $space-4;
+}
+
+.sm {
+  min-height: 2rem;
+  padding: $space-1 $space-3;
+  font-size: 0.5625rem;
+  border-width: 2px;
+}
+
+.iconOnly.md {
+  width: 2.75rem;
+  padding: 0;
+}
+
+.iconOnly.sm {
+  width: 2rem;
+  padding: 0;
+}
+
+.primary {
+  background: $color-yellow;
+}
+
+.secondary {
+  background: $color-white;
+}
+
+.danger {
+  background: $color-red;
+}
+
+.ghost {
+  background: transparent;
+  box-shadow: none;
+  border-color: transparent;
+
+  &:hover:not(:disabled) {
+    border-color: $color-ink;
+    box-shadow: $shadow-pressed;
+  }
+}
+
+.crt {
+  color: $color-crt-text;
+  background: $color-crt-raised;
+  border-color: $color-crt-text;
+  box-shadow: 3px 3px 0 $color-pink;
+
+  &:hover:not(:disabled) {
+    box-shadow: 4px 4px 0 $color-pink;
+  }
+
+  &:active:not(:disabled) {
+    box-shadow: 1px 1px 0 $color-pink;
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "explicit"
+  },
+  // Windows defaults new files to CRLF, which the prettier/prettier rule
+  // reports on every line. .editorconfig and .gitattributes enforce LF too.
+  "files.eol": "\n"
+}

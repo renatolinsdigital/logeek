@@ -1,0 +1,147 @@
+@use 'sass:map';
+@use 'theme' as *;
+@use 'mixins' as *;
+
+.card {
+  --card-color: #{$color-pink};
+
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  height: 100%;
+  border: $border;
+  background: $color-white;
+  box-shadow: $shadow-hard;
+  transition: transform $transition-fast;
+
+  @each $color-name, $color-value in $card-colors {
+    &[data-color='#{$color-name}'] {
+      --card-color: #{$color-value};
+    }
+  }
+
+  &:focus-within {
+    transform: translate(-2px, -2px);
+    box-shadow: 8px 8px 0 $color-ink;
+  }
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  padding: $space-3;
+  border-bottom: $border;
+  background: var(--card-color);
+}
+
+.number {
+  flex-shrink: 0;
+  padding: $space-2;
+  background: $color-ink;
+  color: $color-white;
+  @include pixel-label(0.625rem);
+}
+
+.title {
+  flex: 1;
+  min-width: 0;
+  padding: $space-1 $space-2;
+  border: 2px solid transparent;
+  background: transparent;
+  @include pixel-label(0.75rem);
+
+  &::placeholder {
+    color: color-mix(in srgb, #{$color-ink} 55%, transparent);
+  }
+
+  &:hover {
+    border-color: $color-ink;
+  }
+
+  &:focus-visible {
+    border-color: $color-ink;
+    background: $color-white;
+    box-shadow: none;
+    outline: none;
+  }
+}
+
+.tools {
+  display: flex;
+  align-items: center;
+  gap: $space-1;
+  padding: $space-1 $space-2;
+  border-bottom: $border-thin;
+  background: color-mix(in srgb, var(--card-color) 22%, #{$color-white});
+}
+
+.toolsSpacer {
+  flex: 1;
+}
+
+.body {
+  display: grid;
+  flex: 1;
+  align-content: start;
+  gap: $space-4;
+  padding: $space-4;
+}
+
+.then {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: stretch;
+  border: $border;
+  box-shadow: $shadow-small;
+}
+
+.thenLabel {
+  display: grid;
+  place-items: center;
+  padding: 0 $space-3;
+  border-right: $border;
+  background: $color-ink;
+  color: var(--card-color);
+  @include pixel-label(0.625rem);
+}
+
+.thenInput {
+  min-width: 0;
+  min-height: 2.75rem;
+  padding: $space-2 $space-3;
+  border: 0;
+  background: $color-white;
+  font-weight: 700;
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  padding: $space-2 $space-3;
+  border-top: $border-thin;
+  color: $color-muted;
+  font-size: $text-xs;
+
+  &[data-run='match'] {
+    background: $color-lime;
+    color: $color-ink;
+    font-weight: 700;
+  }
+}
+
+.runDot {
+  width: 0.625rem;
+  height: 0.625rem;
+  border: 2px solid $color-ink;
+  background: $color-white;
+
+  [data-run='match'] & {
+    background: $color-ink;
+  }
+
+  [data-run='miss'] & {
+    background: $color-red;
+  }
+}

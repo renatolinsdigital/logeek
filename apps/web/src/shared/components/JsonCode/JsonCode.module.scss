@@ -1,0 +1,33 @@
+@use 'theme' as *;
+@use 'mixins' as *;
+
+.code {
+  margin: 0;
+  max-height: 32rem;
+  overflow: auto;
+  padding: $space-4;
+  color: $color-crt-text;
+  font-family: $font-body;
+  font-size: $text-sm;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  scrollbar-color: $color-pink $color-crt;
+}
+
+.key {
+  color: $color-pink;
+}
+
+.string {
+  color: $color-lime;
+}
+
+.number {
+  color: $color-cyan;
+}
+
+.boolean,
+.null {
+  color: $color-yellow;
+}

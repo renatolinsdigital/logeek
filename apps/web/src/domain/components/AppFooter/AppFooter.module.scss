@@ -1,0 +1,54 @@
+@use 'theme' as *;
+@use 'mixins' as *;
+
+.footer {
+  margin-top: $space-7;
+  border-top: $border;
+  background: $color-ink;
+  color: $color-white;
+}
+
+.inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: $space-4;
+  max-width: $page-max-width;
+  margin: 0 auto;
+  padding: $space-5 $space-4;
+
+  @include respond-to(md) {
+    padding: $space-5;
+  }
+}
+
+.logo {
+  display: block;
+  width: 28px;
+  height: 40px;
+}
+
+.credit {
+  @include pixel-label(0.625rem);
+}
+
+.link {
+  color: $color-yellow;
+  text-decoration: underline;
+  text-decoration-thickness: 3px;
+  text-underline-offset: 4px;
+
+  &:hover {
+    color: $color-lime;
+  }
+}
+
+.hiddenText {
+  @include visually-hidden;
+}
+
+.gameOver {
+  margin-left: auto;
+  color: $color-crt-dim;
+  @include pixel-label(0.5rem);
+}

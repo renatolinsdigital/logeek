@@ -1,0 +1,47 @@
+@use 'theme' as *;
+@use 'mixins' as *;
+
+.inputs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: $space-3 $space-4;
+  margin: 0;
+  padding: $space-4;
+  border: 2px dashed $color-crt-line;
+}
+
+.legend {
+  padding: 0 $space-2;
+  color: $color-yellow;
+  @include pixel-label(0.5625rem);
+}
+
+.field {
+  display: grid;
+  gap: $space-1;
+  min-width: 0;
+}
+
+.label {
+  color: $color-crt-dim;
+  font-size: $text-xs;
+  font-weight: 700;
+}
+
+.input {
+  width: 8rem;
+  min-height: 2.25rem;
+  padding: $space-1 $space-2;
+  border: 2px solid $color-crt-text;
+  background: $color-crt-raised;
+  color: $color-white;
+
+  &[aria-invalid='true'] {
+    border-color: $color-red;
+  }
+}
+
+.empty {
+  color: $color-crt-dim;
+}

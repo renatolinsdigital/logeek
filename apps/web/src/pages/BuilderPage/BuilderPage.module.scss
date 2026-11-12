@@ -1,0 +1,33 @@
+@use 'theme' as *;
+@use 'mixins' as *;
+
+.page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  overflow-x: clip;
+}
+
+.main {
+  display: grid;
+  gap: $space-6;
+  width: 100%;
+  max-width: $page-max-width;
+  margin: 0 auto;
+  padding: $space-6 $space-4 0;
+
+  @include respond-to(md) {
+    gap: $space-7;
+    padding: $space-7 $space-5 0;
+  }
+}
+
+.outputs {
+  display: grid;
+  gap: $space-6;
+  align-items: start;
+
+  @include respond-to(xl) {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  }
+}

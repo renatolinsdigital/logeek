@@ -1,0 +1,77 @@
+@use 'theme' as *;
+@use 'mixins' as *;
+
+.group {
+  display: grid;
+  gap: $space-3;
+}
+
+.nested {
+  padding: $space-3;
+  border: 2px dashed $color-ink;
+  background: color-mix(in srgb, var(--card-color) 18%, #{$color-white});
+}
+
+.header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: $space-2;
+}
+
+.keyword {
+  padding: $space-1 $space-2;
+  background: $color-ink;
+  color: $color-yellow;
+  @include pixel-label(0.5625rem);
+}
+
+.hint {
+  color: $color-muted;
+  font-size: $text-xs;
+}
+
+.removeGroup {
+  margin-left: auto;
+}
+
+.items {
+  display: grid;
+  gap: $space-1;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.join {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+
+  &::before,
+  &::after {
+    content: '';
+    flex: 1;
+    border-top: 2px dotted $color-muted;
+  }
+
+  span {
+    padding: 0 $space-2;
+    border: $border-thin;
+    background: var(--card-color);
+    @include pixel-label(0.5rem);
+  }
+}
+
+.empty {
+  padding: $space-2 $space-3;
+  border-left: $border;
+  color: $color-muted;
+  font-size: $text-sm;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-2;
+}

@@ -1,0 +1,132 @@
+@use 'theme' as *;
+@use 'mixins' as *;
+
+.header {
+  border-bottom: $border;
+  background: $color-ink;
+  color: $color-white;
+}
+
+.inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: $space-5;
+  max-width: $page-max-width;
+  margin: 0 auto;
+  padding: $space-6 $space-4 $space-5;
+
+  @include respond-to(md) {
+    padding: $space-7 $space-5 $space-6;
+  }
+}
+
+.brand {
+  display: grid;
+  gap: $space-3;
+}
+
+.coin {
+  color: $color-yellow;
+  animation: blink 1.2s steps(2) infinite;
+  @include pixel-label(0.625rem);
+}
+
+// Three offset shadows in the arcade colours make the chunky 8-bit title.
+.title {
+  font-family: $font-pixel;
+  font-size: $text-hero;
+  font-weight: 400;
+  line-height: 1.1;
+  color: $color-white;
+  text-transform: uppercase;
+  text-shadow:
+    4px 4px 0 $color-pink,
+    8px 8px 0 $color-cyan,
+    12px 12px 0 $color-violet;
+}
+
+.tagline {
+  max-width: 34rem;
+  margin-top: $space-2;
+  color: $color-crt-text;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-3;
+
+  button {
+    box-shadow: 3px 3px 0 $color-white;
+  }
+}
+
+.steps {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: $border;
+
+  @include respond-to(md) {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.step {
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+  padding: $space-3 $space-4;
+  color: $color-ink;
+  font-weight: 700;
+  font-size: $text-sm;
+
+  @each $color-name, $color-value in $card-colors {
+    &[data-color='#{$color-name}'] {
+      background: $color-value;
+    }
+  }
+
+  & + & {
+    border-left: $border;
+  }
+
+  &:nth-child(3) {
+    border-left: 0;
+    border-top: $border;
+
+    @include respond-to(md) {
+      border-left: $border;
+      border-top: 0;
+    }
+  }
+
+  &:nth-child(4) {
+    border-top: $border;
+
+    @include respond-to(md) {
+      border-top: 0;
+    }
+  }
+}
+
+.stepNumber {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 1.75rem;
+  height: 1.75rem;
+  background: $color-ink;
+  color: $color-white;
+  @include pixel-label(0.625rem);
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}

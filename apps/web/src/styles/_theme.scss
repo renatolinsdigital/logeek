@@ -1,0 +1,82 @@
+// Every colour, size and font the app uses. Components read these, never raw values.
+
+:root {
+  --color-ink: #0d0a1f;
+  --color-paper: #fff4d6;
+  --color-paper-deep: #ffe7a8;
+  --color-grid: rgb(13 10 31 / 7%);
+  --color-white: #ffffff;
+  --color-muted: #5a5275;
+
+  --color-pink: #ff3ea5;
+  --color-cyan: #19e3ff;
+  --color-lime: #b6ff3b;
+  --color-yellow: #ffe14d;
+  --color-orange: #ff8a1f;
+  --color-violet: #a47bff;
+  --color-red: #ff4040;
+
+  --color-crt: #150e33;
+  --color-crt-raised: #231a4d;
+  --color-crt-line: #3b2f78;
+  --color-crt-text: #ece8ff;
+  --color-crt-dim: #8e86b8;
+}
+
+$color-ink: var(--color-ink);
+$color-paper: var(--color-paper);
+$color-paper-deep: var(--color-paper-deep);
+$color-grid: var(--color-grid);
+$color-white: var(--color-white);
+$color-muted: var(--color-muted);
+$color-pink: var(--color-pink);
+$color-cyan: var(--color-cyan);
+$color-lime: var(--color-lime);
+$color-yellow: var(--color-yellow);
+$color-orange: var(--color-orange);
+$color-violet: var(--color-violet);
+$color-red: var(--color-red);
+$color-crt: var(--color-crt);
+$color-crt-raised: var(--color-crt-raised);
+$color-crt-line: var(--color-crt-line);
+$color-crt-text: var(--color-crt-text);
+$color-crt-dim: var(--color-crt-dim);
+
+// The card palette, in the order new cards take it.
+$card-colors: (
+  pink: $color-pink,
+  cyan: $color-cyan,
+  lime: $color-lime,
+  yellow: $color-yellow,
+  orange: $color-orange,
+  violet: $color-violet,
+);
+
+$font-pixel: 'Press Start 2P', ui-monospace, monospace;
+$font-body: 'Space Mono', ui-monospace, 'Cascadia Mono', Consolas, monospace;
+
+$text-xs: 0.75rem;
+$text-sm: 0.875rem;
+$text-md: 1rem;
+$text-lg: 1.25rem;
+$text-xl: 1.75rem;
+$text-hero: clamp(2rem, 7vw, 4rem);
+
+$space-1: 0.25rem;
+$space-2: 0.5rem;
+$space-3: 0.75rem;
+$space-4: 1rem;
+$space-5: 1.5rem;
+$space-6: 2rem;
+$space-7: 3rem;
+
+$border-width: 3px;
+$border: $border-width solid $color-ink;
+$border-thin: 2px solid $color-ink;
+$shadow-hard: 6px 6px 0 $color-ink;
+$shadow-small: 3px 3px 0 $color-ink;
+$shadow-pressed: 1px 1px 0 $color-ink;
+
+$page-max-width: 1280px;
+$z-toast: 100;
+$transition-fast: 120ms ease-out;

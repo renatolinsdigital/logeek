@@ -1,0 +1,48 @@
+@use 'theme' as *;
+@use 'mixins' as *;
+
+// The row answers to its own width, not the page's: the same card is wide on
+// a desktop grid and narrow inside a nested group on a phone.
+.frame {
+  container-type: inline-size;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(4.25rem, 0.7fr) minmax(0, 1fr) auto;
+  align-items: center;
+  gap: $space-2;
+}
+
+@container (max-width: 18rem) {
+  .row {
+    grid-template-columns: minmax(4.25rem, 0.8fr) minmax(0, 1fr) auto;
+  }
+
+  .variable {
+    grid-column: 1 / -1;
+  }
+}
+
+.control {
+  min-width: 0;
+  min-height: 2.25rem;
+  padding: $space-1 $space-2;
+  border: $border-thin;
+  background: $color-white;
+  font-size: $text-sm;
+}
+
+.variable {
+  font-weight: 700;
+}
+
+.operator {
+  background: $color-paper;
+  text-align: center;
+}
+
+.value[aria-invalid='true'] {
+  border-color: $color-red;
+  background: color-mix(in srgb, #{$color-red} 12%, #{$color-white});
+}

@@ -1,0 +1,69 @@
+@use 'theme' as *;
+@use 'mixins' as *;
+
+.chip {
+  --type-color: #{$color-cyan};
+
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  min-width: 0;
+  padding-right: $space-1;
+  border: $border;
+  background: $color-white;
+  box-shadow: $shadow-small;
+
+  &[data-type='text'] {
+    --type-color: #{$color-lime};
+  }
+
+  &[data-type='boolean'] {
+    --type-color: #{$color-yellow};
+  }
+}
+
+.typeTag {
+  display: grid;
+  place-items: center;
+  align-self: stretch;
+  min-width: 2.5rem;
+  border-right: $border;
+  background: var(--type-color);
+  @include pixel-label(0.625rem);
+}
+
+.name {
+  flex: 1 1 6rem;
+  min-width: 9ch;
+  padding: $space-2 0;
+  border: 0;
+  border-bottom: 2px dashed transparent;
+  background: transparent;
+  font-weight: 700;
+
+  &:hover {
+    border-bottom-color: $color-muted;
+  }
+
+  &:focus-visible {
+    box-shadow: none;
+    outline: none;
+    border-bottom-color: $color-ink;
+    background: $color-paper;
+  }
+}
+
+.type {
+  flex: 0 1 7.75rem;
+  min-width: 0;
+  padding: $space-1;
+  border: $border-thin;
+  background: $color-paper;
+  font-size: $text-xs;
+}
+
+.useCount {
+  min-width: 2ch;
+  color: $color-muted;
+  font-size: $text-xs;
+}

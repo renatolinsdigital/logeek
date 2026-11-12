@@ -1,0 +1,16 @@
+node_modules
+dist
+build
+out
+coverage
+.angular
+.svelte-kit
+.nuxt
+.output
+.next
+public
+package-lock.json
+*.md
+# The kit is copied from dev-boilerplate and compared with it by
+# /boilerplate-sync: reformatting it here would show up as drift.
+.claude

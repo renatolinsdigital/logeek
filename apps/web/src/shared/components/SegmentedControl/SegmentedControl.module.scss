@@ -1,0 +1,78 @@
+@use 'theme' as *;
+@use 'mixins' as *;
+
+.fieldset {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-2;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.legend {
+  float: left;
+  margin-right: $space-2;
+  padding: 0;
+  @include pixel-label(0.5625rem);
+}
+
+.hiddenLegend {
+  @include visually-hidden;
+}
+
+.options {
+  display: inline-flex;
+  border: $border-thin;
+  box-shadow: $shadow-pressed;
+  background: $color-white;
+}
+
+.option {
+  min-height: 2.25rem;
+  padding: $space-1 $space-3;
+  border: 0;
+  background: transparent;
+  @include pixel-label(0.5625rem);
+
+  & + & {
+    border-left: $border-thin;
+  }
+
+  &[aria-pressed='true'] {
+    background: $color-ink;
+    color: $color-yellow;
+  }
+}
+
+.sm .option {
+  min-height: 1.75rem;
+  padding: 0 $space-2;
+  font-size: 0.5rem;
+}
+
+.crt {
+  .legend {
+    color: $color-crt-dim;
+  }
+
+  .options {
+    border-color: $color-crt-text;
+    background: $color-crt-raised;
+    box-shadow: 2px 2px 0 $color-pink;
+  }
+
+  .option {
+    color: $color-crt-text;
+  }
+
+  .option + .option {
+    border-left-color: $color-crt-text;
+  }
+
+  .option[aria-pressed='true'] {
+    background: $color-lime;
+    color: $color-ink;
+  }
+}

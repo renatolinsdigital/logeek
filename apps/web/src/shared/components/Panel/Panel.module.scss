@@ -1,0 +1,84 @@
+@use 'theme' as *;
+@use 'mixins' as *;
+
+.panel {
+  min-width: 0;
+  border: $border;
+  box-shadow: $shadow-hard;
+}
+
+.paper {
+  background: $color-white;
+}
+
+.crt {
+  border-color: $color-ink;
+  @include crt-screen;
+
+  .header {
+    border-bottom-color: $color-crt-line;
+    background: $color-ink;
+  }
+
+  .eyebrow {
+    color: $color-lime;
+  }
+
+  .description {
+    color: $color-crt-dim;
+  }
+}
+
+.header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: $space-3;
+  padding: $space-4;
+  border-bottom: $border;
+
+  @include respond-to(md) {
+    padding: $space-4 $space-5;
+  }
+}
+
+.heading {
+  display: grid;
+  gap: $space-2;
+  min-width: 0;
+}
+
+.eyebrow {
+  color: $color-pink;
+  @include pixel-label(0.5625rem);
+}
+
+.title {
+  @include pixel-label($text-md);
+
+  @include respond-to(md) {
+    font-size: $text-lg;
+  }
+}
+
+.description {
+  max-width: 60ch;
+  color: $color-muted;
+  font-size: $text-sm;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: $space-3;
+}
+
+.body {
+  padding: $space-4;
+
+  @include respond-to(md) {
+    padding: $space-5;
+  }
+}

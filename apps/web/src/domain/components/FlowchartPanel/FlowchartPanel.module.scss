@@ -1,0 +1,54 @@
+@use 'theme' as *;
+@use 'mixins' as *;
+
+.layout {
+  display: grid;
+  gap: $space-5;
+}
+
+.result {
+  display: flex;
+  align-items: center;
+  gap: $space-4;
+  padding: $space-3 $space-4;
+  border: $border-width solid $color-ink;
+  background: $color-yellow;
+  color: $color-ink;
+  box-shadow: 5px 5px 0 $color-pink;
+}
+
+.resultIcon {
+  flex-shrink: 0;
+  animation: blink 1s steps(2) infinite;
+}
+
+.resultText {
+  display: grid;
+  gap: $space-1;
+  min-width: 0;
+}
+
+.resultLabel {
+  @include pixel-label(0.5rem);
+}
+
+.resultValue {
+  font-size: $text-lg;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
+.resultSource {
+  font-size: $text-xs;
+}
+
+.chart {
+  overflow-x: auto;
+  padding: $space-2 $space-2 $space-4 0;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0.2;
+  }
+}

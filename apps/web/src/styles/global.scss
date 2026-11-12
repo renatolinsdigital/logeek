@@ -1,0 +1,76 @@
+@use 'theme' as *;
+@use 'mixins' as *;
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: $font-body;
+  font-size: $text-md;
+  line-height: 1.5;
+  color: $color-ink;
+  background-color: $color-paper;
+  background-image:
+    linear-gradient($color-grid 1px, transparent 1px),
+    linear-gradient(90deg, $color-grid 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+h1,
+h2,
+h3,
+h4,
+p {
+  margin: 0;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
+}
+
+a {
+  color: inherit;
+}
+
+::selection {
+  color: $color-ink;
+  background: $color-yellow;
+}
+
+:focus-visible {
+  outline: $border-width solid $color-ink;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 6px $color-cyan;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

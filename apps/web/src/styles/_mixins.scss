@@ -1,0 +1,69 @@
+@use 'sass:map';
+@use 'theme' as *;
+
+$breakpoints: (
+  sm: 640px,
+  md: 768px,
+  lg: 1024px,
+  xl: 1280px,
+);
+
+@mixin respond-to($name) {
+  @media (min-width: map.get($breakpoints, $name)) {
+    @content;
+  }
+}
+
+// rgba($token, 0.5) breaks on var(); color-mix works on custom properties.
+@function translucent($color, $opacity) {
+  @return color-mix(in srgb, #{$color} calc(#{$opacity} * 100%), transparent);
+}
+
+@mixin focus-ring($color: $color-cyan) {
+  &:focus-visible {
+    outline: $border-width solid $color-ink;
+    outline-offset: 2px;
+    box-shadow: 0 0 0 6px $color;
+  }
+}
+
+// The brutalist slab: thick ink border and a hard offset shadow.
+@mixin slab($background: $color-white, $shadow: $shadow-hard) {
+  background: $background;
+  border: $border;
+  box-shadow: $shadow;
+}
+
+@mixin pixel-label($size: $text-xs) {
+  font-family: $font-pixel;
+  font-size: $size;
+  line-height: 1.6;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+@mixin visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+// The dark arcade screen: scanlines over a deep violet glass.
+@mixin crt-screen {
+  position: relative;
+  color: $color-crt-text;
+  background-color: $color-crt;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    rgb(255 255 255 / 3%) 0,
+    rgb(255 255 255 / 3%) 1px,
+    transparent 1px,
+    transparent 4px
+  );
+}

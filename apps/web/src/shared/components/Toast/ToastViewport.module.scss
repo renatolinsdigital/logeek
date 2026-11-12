@@ -1,0 +1,60 @@
+@use 'theme' as *;
+@use 'mixins' as *;
+
+.viewport {
+  position: fixed;
+  right: $space-4;
+  bottom: $space-4;
+  left: $space-4;
+  z-index: $z-toast;
+  display: grid;
+  justify-items: center;
+  gap: $space-2;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  pointer-events: none;
+}
+
+.toast {
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+  max-width: 34rem;
+  padding: $space-2 $space-2 $space-2 $space-4;
+  color: $color-crt-text;
+  background: $color-ink;
+  border: $border-width solid $color-lime;
+  box-shadow: 5px 5px 0 $color-pink;
+  pointer-events: auto;
+  animation: pop-in 160ms steps(4) both;
+}
+
+.message {
+  font-size: $text-sm;
+}
+
+.action {
+  padding: $space-1 $space-3;
+  border: $border-thin;
+  background: $color-lime;
+  color: $color-ink;
+  @include pixel-label(0.5625rem);
+}
+
+.dismiss {
+  display: inline-grid;
+  place-items: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border: 0;
+  background: transparent;
+  color: $color-crt-dim;
+}
+
+@keyframes pop-in {
+  from {
+    transform: translateY(12px) scale(0.92);
+    opacity: 0;
+  }
+}

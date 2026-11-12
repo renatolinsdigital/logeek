@@ -1,0 +1,44 @@
+# dependencies
+node_modules/
+
+# builds and caches
+dist/
+build/
+out/
+coverage/
+.angular/
+.svelte-kit/
+.nuxt/
+.output/
+.next/
+.vite/
+*.tsbuildinfo
+
+# env files: only the example is committed
+.env
+.env.*
+!.env.example
+
+# keys and credentials
+*.pem
+*.key
+*.p12
+*.pfx
+
+# logs
+npm-debug.log*
+*.log
+
+# editors and systems
+.DS_Store
+Thumbs.db
+.idea/
+
+# local-only files written by Claude Code hooks
+.claude/settings.local.json
+.claude/activity.log
+prompt_history.docx
+
+# test reports
+playwright-report/
+test-results/

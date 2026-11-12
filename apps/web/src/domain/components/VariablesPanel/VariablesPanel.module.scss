@@ -1,0 +1,63 @@
+@use 'theme' as *;
+@use 'mixins' as *;
+
+.list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 20rem), 1fr));
+  gap: $space-3;
+  margin: 0 0 $space-5;
+  padding: 0;
+  list-style: none;
+}
+
+.empty {
+  margin-bottom: $space-4;
+  color: $color-muted;
+}
+
+.form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: $space-3;
+  padding: $space-4;
+  border: 2px dashed $color-ink;
+  background: $color-paper;
+}
+
+.field {
+  display: grid;
+  gap: $space-1;
+  flex: 1 1 12rem;
+
+  &:nth-child(2) {
+    flex: 0 1 10rem;
+  }
+}
+
+.label {
+  @include pixel-label(0.5625rem);
+}
+
+.input {
+  min-height: 2.75rem;
+  padding: $space-2 $space-3;
+  border: $border;
+  background: $color-white;
+
+  &[aria-invalid='true'] {
+    border-color: $color-red;
+    box-shadow: 3px 3px 0 $color-red;
+  }
+}
+
+.error {
+  flex-basis: 100%;
+  color: $color-ink;
+  font-weight: 700;
+
+  &::before {
+    content: '! ';
+    color: $color-red;
+  }
+}
