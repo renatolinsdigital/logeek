@@ -62,7 +62,7 @@ lockfile whole.
 
 - This is a frontend-only project: no API, no database, no
   `packages/contracts`. A board lives in the browser (localStorage) and
-  travels in share links. `docs/decisions/0001-frontend-only.md` says why.
+  travels in share links.
 - Layers in the web app: `pages` use `domain`, `domain` uses `shared`, and
   all of them use `lib`. `shared` knows nothing about logic cards; `domain`
   never imports from `pages`.

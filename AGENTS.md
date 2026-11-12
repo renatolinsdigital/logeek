@@ -6,8 +6,7 @@ flowchart, to talk through the conditions of a system together.
 Built in TypeScript with React 19 and Vite 8, state in Zustand, styled with
 SCSS, as a single app at the repository root (`src/`, no workspaces). There
 is no API and no database: a board lives in the browser and travels in share
-links (`docs/decisions/0001-frontend-only.md`,
-`docs/decisions/0002-single-app-at-root.md`).
+links.
 
 - The map of the code and the rules for working in it:
   `.claude/rules/palace.md`, then the `room-*.md` beside it for the area you

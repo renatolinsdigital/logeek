@@ -1,9 +1,6 @@
 # Decisions
 
-| Number | Decision | Status |
-| --- | --- | --- |
-| [0001](0001-frontend-only.md) | A frontend-only app, with the board in the browser | Accepted; its layout superseded by 0002 |
-| [0002](0002-single-app-at-root.md) | One app at the repository root | Accepted |
+None recorded yet.
 
 ## Adding one
 

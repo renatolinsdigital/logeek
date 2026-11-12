@@ -172,9 +172,6 @@ docs/
 | --- | --- |
 | Use every part of the app | [User guide](docs/USER-GUIDE.md) |
 | Understand how the code fits together | [Architecture](docs/ARCHITECTURE.md) |
-| Know why it has no backend | [0001: frontend only](docs/decisions/0001-frontend-only.md) |
-| Know why it is one app at the root | [0002: single app at root](docs/decisions/0002-single-app-at-root.md) |
-| See what changed | [Changelog](CHANGELOG.md) |
 | Change the code with an AI assistant | [`AGENTS.md`](AGENTS.md), then `.claude/rules/palace.md` |
 
 ## Credits

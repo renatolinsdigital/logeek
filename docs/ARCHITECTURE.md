@@ -47,8 +47,7 @@ Three ideas carry the design:
    plain TypeScript in `domain/logic/`, with no React. They are tested on
    their own.
 3. **No server.** A share link puts the board in the URL fragment, which
-   browsers never send to a server. See
-   [0001](decisions/0001-frontend-only.md).
+   browsers never send to a server.
 
 ## The board
 
