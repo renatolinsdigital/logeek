@@ -14,7 +14,10 @@ Depth: `{boilerplate}/guides/frontend/styling-sass.md`.
   neon) hold the outputs.
 - `$card-colors` in `_theme.scss` drives every `data-color` attribute
   (cards, flowchart nodes, header steps). A new card colour goes in that map
-  and in `CARD_COLORS` in `domain/models/logic.model.ts`.
+  and in `CARD_COLORS` in `domain/models/logic.model.ts`. Its keys stay
+  quoted: an unquoted `cyan` is a colour value to Sass, not a name.
+- `src/styles/stylesheets.test.ts` compiles every stylesheet and fails on
+  any Sass warning, since the build only prints them in passing.
 - Fonts are self-hosted through `@fontsource` packages, imported in
   `main.tsx`: no request leaves for Google Fonts.
 - Vitest renders CSS modules with plain, unscoped class names

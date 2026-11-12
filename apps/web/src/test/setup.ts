@@ -4,5 +4,6 @@ import { afterEach } from 'vitest';
 
 afterEach(() => {
   cleanup();
-  window.localStorage.clear();
+  // Tests that run in the node environment (stylesheets) have no window.
+  if (typeof window !== 'undefined') window.localStorage.clear();
 });

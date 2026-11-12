@@ -42,14 +42,16 @@ $color-crt-line: var(--color-crt-line);
 $color-crt-text: var(--color-crt-text);
 $color-crt-dim: var(--color-crt-dim);
 
-// The card palette, in the order new cards take it.
+// The card palette, in the order new cards take it. The keys are quoted
+// because unquoted they are CSS colour names, and Sass would read them as
+// colour values (cyan as aqua) when they are interpolated into selectors.
 $card-colors: (
-  pink: $color-pink,
-  cyan: $color-cyan,
-  lime: $color-lime,
-  yellow: $color-yellow,
-  orange: $color-orange,
-  violet: $color-violet,
+  'pink': $color-pink,
+  'cyan': $color-cyan,
+  'lime': $color-lime,
+  'yellow': $color-yellow,
+  'orange': $color-orange,
+  'violet': $color-violet,
 );
 
 $font-pixel: 'Press Start 2P', ui-monospace, monospace;
