@@ -35,8 +35,8 @@ Logeek gives the whole team one shared picture of the logic:
   `is not`, `contains` for text; `is`, `is not` for true/false.
 - **Ordered decisions**: cards are checked first to last, the first card
   that passes answers, and an **Otherwise** answer covers the rest.
-- **Three example cards** to start from, and an Examples button to bring
-  them back.
+- **Three example cards**: a new board starts empty, and the Examples button
+  loads them to start from.
 - **Flowchart**: the deck drawn as a decision chain (YES to the answer, NO to
   the next card), updated live.
 - **Test run**: type values for each variable; the flowchart lights the path

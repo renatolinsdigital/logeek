@@ -68,8 +68,12 @@ export interface BoardState extends BoardData, BoardActions {
   lastRemovedCard: { card: LogicCard; index: number } | null;
 }
 
+function createEmptyBoard(): Board {
+  return { variables: [], cards: [], otherwise: '' };
+}
+
 export function createInitialBoardData(): BoardData {
-  return { ...createExampleBoard(), jsonFormat: 'logeek', isJsonCompact: false };
+  return { ...createEmptyBoard(), jsonFormat: 'logeek', isJsonCompact: false };
 }
 
 function createEmptyGroup(match: GroupMatch = 'all'): ConditionGroup {
@@ -296,7 +300,7 @@ export const useBoardStore = create<BoardState>()(
 
         resetToExamples: () => set({ ...createExampleBoard(), lastRemovedCard: null }),
 
-        clearBoard: () => set({ variables: [], cards: [], otherwise: '', lastRemovedCard: null }),
+        clearBoard: () => set({ ...createEmptyBoard(), lastRemovedCard: null }),
 
         setJsonFormat: (jsonFormat) => set({ jsonFormat }),
 
@@ -315,7 +319,7 @@ export const useBoardStore = create<BoardState>()(
         isJsonCompact,
       }),
       // Saved storage is untrusted (an older version, a hand edit): it passes
-      // the same checks as a shared link, or the examples load instead.
+      // the same checks as a shared link, or the board starts empty instead.
       merge: (persistedState, currentState) => {
         const savedState = (persistedState ?? {}) as Partial<BoardData>;
         const savedBoard = parseBoard(savedState);

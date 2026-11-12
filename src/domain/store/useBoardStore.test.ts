@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it } from 'vitest';
-import { collectConditions } from '@/domain/logic';
+import { collectConditions, createExampleBoard } from '@/domain/logic';
 import { countVariableUses, createInitialBoardData, useBoardStore } from './useBoardStore';
 
 function getState() {
@@ -13,11 +13,23 @@ function getVariableId(name: string): string {
 }
 
 beforeEach(() => {
-  useBoardStore.setState({ ...createInitialBoardData(), lastRemovedCard: null });
+  useBoardStore.setState({
+    ...createInitialBoardData(),
+    ...createExampleBoard(),
+    lastRemovedCard: null,
+  });
 });
 
 describe('useBoardStore', () => {
-  it('starts with the three example cards', () => {
+  it('starts with an empty board, with no variables or cards', () => {
+    expect(createInitialBoardData()).toMatchObject({ variables: [], cards: [], otherwise: '' });
+  });
+
+  it('loads the three example cards on request', () => {
+    useBoardStore.setState({ ...createInitialBoardData(), lastRemovedCard: null });
+
+    getState().resetToExamples();
+
     expect(getState().cards.map((card) => card.title)).toEqual([
       'Turbo mode',
       'Night league',

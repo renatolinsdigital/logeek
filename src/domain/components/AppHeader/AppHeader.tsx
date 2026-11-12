@@ -42,7 +42,7 @@ function AppHeader() {
           </Button>
           <Button
             icon="reset"
-            onClick={() => replaceBoard('resetToExamples', 'The example cards are back.')}
+            onClick={() => replaceBoard('resetToExamples', 'Example cards loaded.')}
           >
             Examples
           </Button>

@@ -1,12 +1,17 @@
 import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { beforeEach, describe, expect, it } from 'vitest';
+import { createExampleBoard } from '@/domain/logic';
 import { createInitialBoardData, useBoardStore } from '@/domain/store';
 import { useToastStore } from '@/shared/components';
 import BuilderPage from './BuilderPage';
 
 beforeEach(() => {
-  useBoardStore.setState({ ...createInitialBoardData(), lastRemovedCard: null });
+  useBoardStore.setState({
+    ...createInitialBoardData(),
+    ...createExampleBoard(),
+    lastRemovedCard: null,
+  });
   useToastStore.setState({ toasts: [] });
 });
 
@@ -15,7 +20,22 @@ function getAnswer(): HTMLElement {
 }
 
 describe('BuilderPage', () => {
-  it('starts with three example cards and answers with the second one', () => {
+  it('starts with no cards and loads the examples from the Examples button', async () => {
+    const user = userEvent.setup();
+    useBoardStore.setState({ ...createInitialBoardData(), lastRemovedCard: null });
+    render(<BuilderPage />);
+    expect(screen.queryAllByRole('article')).toHaveLength(0);
+
+    await user.click(screen.getByRole('button', { name: 'Examples' }));
+
+    expect(screen.getAllByRole('article')).toHaveLength(3);
+    expect(screen.getByText('Example cards loaded.')).toBeInTheDocument();
+
+    await user.click(screen.getByRole('button', { name: 'Undo' }));
+    expect(screen.queryAllByRole('article')).toHaveLength(0);
+  });
+
+  it('answers with the second example card', () => {
     render(<BuilderPage />);
 
     expect(screen.getAllByRole('article')).toHaveLength(3);
