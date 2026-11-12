@@ -1,10 +1,9 @@
-// The shared base. apps/web has its own eslint.config.mjs that spreads this
-// one and adds the React plugins; ESLint 10 uses the config nearest to each
-// file it lints.
 import js from '@eslint/js';
 import { defineConfig, globalIgnores } from 'eslint/config';
 import prettierConfig from 'eslint-config-prettier';
 import prettierPlugin from 'eslint-plugin-prettier';
+import reactHooks from 'eslint-plugin-react-hooks';
+import { reactRefresh } from 'eslint-plugin-react-refresh';
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
 
@@ -34,8 +33,18 @@ export default defineConfig([
     },
   },
   {
-    // Root config files run on Node.
-    files: ['*.mjs'],
+    files: ['src/**/*.{ts,tsx}'],
+    languageOptions: { globals: globals.browser },
+  },
+  reactHooks.configs.flat.recommended,
+  reactRefresh.configs.vite(),
+  {
+    files: ['**/*.test.{ts,tsx}', 'src/test/**'],
+    rules: { 'react-refresh/only-export-components': 'off' },
+  },
+  {
+    // Config files at the root run on Node.
+    files: ['*.{mjs,ts}'],
     languageOptions: { globals: globals.node },
   },
 ]);

@@ -9,9 +9,9 @@ The rooms live next to this file as `room-*.md`. The method:
 
 | Room | Loads for | Holds |
 | --- | --- | --- |
-| `room-logic.md` | `apps/web/src/domain/logic`, `domain/store`, `domain/models` | How a board is evaluated and exported, the one gate for untrusted input, the store's invariants |
-| `room-ui.md` | `apps/web/src/domain/components`, `shared`, `pages`, `domain/hooks` | Store access from components, the shared tier's rules, pixel icons, checking the page in a browser |
-| `room-styles.md` | `apps/web/src/styles`, every `.module.scss` | The tokens, the card colour map, how tests see CSS modules |
+| `room-logic.md` | `src/domain/logic`, `domain/store`, `domain/models` | How a board is evaluated and exported, the one gate for untrusted input, the store's invariants |
+| `room-ui.md` | `src/domain/components`, `shared`, `pages`, `domain/hooks` | Store access from components, the shared tier's rules, pixel icons, checking the page in a browser |
+| `room-styles.md` | `src/styles`, every `.module.scss` | The tokens, the card colour map, how tests see CSS modules |
 
 ## Where a task starts
 
@@ -19,17 +19,17 @@ Open these first and follow the code from there; do not survey the tree.
 
 | Task | Files |
 | --- | --- |
-| The page layout | `apps/web/src/pages/BuilderPage/BuilderPage.tsx` |
-| A component | `apps/web/src/domain/components/<Name>/` or `apps/web/src/shared/components/<Name>/` |
-| A new operator or variable type | `apps/web/src/domain/models/logic.model.ts`, then `domain/logic/operators.ts`, `evaluate.ts`, `exportJson.ts`, `boardCodec.ts` |
-| The JSON output | `apps/web/src/domain/logic/exportJson.ts` and its test |
-| The flowchart | `apps/web/src/domain/components/Flowchart/` |
-| State and actions | `apps/web/src/domain/store/useBoardStore.ts` |
-| The example cards | `apps/web/src/domain/logic/examples.ts` |
-| Share links | `apps/web/src/domain/logic/boardCodec.ts`, `apps/web/src/domain/hooks/useShareLink.ts` |
-| Styling | `apps/web/src/styles/_theme.scss`, `_mixins.scss` |
-| Tests | beside the code; setup in `apps/web/src/test/setup.ts` |
-| A dependency update | `apps/web/package.json`, root `package.json`, `docs/ARCHITECTURE.md` (versions table) |
+| The page layout | `src/pages/BuilderPage/BuilderPage.tsx` |
+| A component | `src/domain/components/<Name>/` or `src/shared/components/<Name>/` |
+| A new operator or variable type | `src/domain/models/logic.model.ts`, then `domain/logic/operators.ts`, `evaluate.ts`, `exportJson.ts`, `boardCodec.ts` |
+| The JSON output | `src/domain/logic/exportJson.ts` and its test |
+| The flowchart | `src/domain/components/Flowchart/` |
+| State and actions | `src/domain/store/useBoardStore.ts` |
+| The example cards | `src/domain/logic/examples.ts` |
+| Share links | `src/domain/logic/boardCodec.ts`, `src/domain/hooks/useShareLink.ts` |
+| Styling | `src/styles/_theme.scss`, `_mixins.scss` |
+| Tests | beside the code; setup in `src/test/setup.ts` |
+| A dependency update | `package.json`, `docs/ARCHITECTURE.md` (versions table) |
 | A bug fix | the failing area's room, then a regression test that fails first |
 
 Every user-facing feature also gets its line in the Features list of
@@ -70,6 +70,12 @@ lockfile whole.
 - Imports use the `@/` alias; SCSS files `@use` the theme by its short name.
 - Checks: `npm test`, `npm run type-check`, `npm run lint`, `npm run build`.
   `verification.md` says when each runs.
+- On Windows, run `npm test` from a shell whose cwd starts with `D:`, not
+  `d:`: Vitest uppercases the drive letter when it resolves `vitest` for
+  the setup file, so a lowercase cwd loads it twice and every suite fails
+  with "failed to find the current suite". In PowerShell,
+  `Set-Location D:\projects\react_ai\logeek` first. Git hooks already run
+  from `D:`.
 - Conventions in full: `{boilerplate}/guides/architecture/coding-conventions.md`.
 
 ## Keeping it true

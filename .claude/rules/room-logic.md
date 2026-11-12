@@ -1,8 +1,8 @@
 ---
 paths:
-  - "apps/web/src/domain/logic/**/*"
-  - "apps/web/src/domain/store/**/*"
-  - "apps/web/src/domain/models/**/*"
+  - "src/domain/logic/**/*"
+  - "src/domain/store/**/*"
+  - "src/domain/models/**/*"
 ---
 
 # Room: logic

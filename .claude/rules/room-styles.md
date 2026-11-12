@@ -1,7 +1,7 @@
 ---
 paths:
-  - "apps/web/src/styles/**/*"
-  - "apps/web/src/**/*.scss"
+  - "src/styles/**/*"
+  - "src/**/*.scss"
 ---
 
 # Room: styles

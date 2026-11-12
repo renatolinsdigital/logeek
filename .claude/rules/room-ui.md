@@ -1,9 +1,9 @@
 ---
 paths:
-  - "apps/web/src/domain/components/**/*"
-  - "apps/web/src/domain/hooks/**/*"
-  - "apps/web/src/shared/**/*"
-  - "apps/web/src/pages/**/*"
+  - "src/domain/components/**/*"
+  - "src/domain/hooks/**/*"
+  - "src/shared/**/*"
+  - "src/pages/**/*"
 ---
 
 # Room: ui

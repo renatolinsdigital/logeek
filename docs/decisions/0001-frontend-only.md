@@ -1,7 +1,7 @@
 # 0001. A frontend-only app, with the board in the browser
 
 Date: 2026-11-09
-Status: accepted
+Status: accepted; its layout (`apps/web` in a workspace) superseded by [0002](0002-single-app-at-root.md)
 
 ## Context
 

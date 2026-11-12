@@ -22,7 +22,7 @@ TypeScript below 6.1 only. Move to 7 when typescript-eslint does.
 ## Layers
 
 ```
-apps/web/src
+src
   pages/BuilderPage          the one screen; composes the domain panels
     -> domain/               knows logic cards
          models/             Board, Variable, LogicCard, Condition, ConditionGroup

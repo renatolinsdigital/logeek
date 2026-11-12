@@ -16,6 +16,8 @@ export default defineConfig({
     },
   },
   test: {
+    // .claude/hooks has its own node:test suite (npm run test:hooks).
+    include: ['src/**/*.test.{ts,tsx}'],
     environment: 'jsdom',
     setupFiles: ['./src/test/setup.ts'],
     css: { modules: { classNameStrategy: 'non-scoped' } },

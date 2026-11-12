@@ -106,10 +106,10 @@ Then open the address Vite prints (usually http://localhost:5173).
 | --- | --- |
 | `npm run dev` | Starts the web app with hot reload |
 | `npm test` | Runs every test once (Vitest and Testing Library) |
-| `npm run type-check` | Type checks the web app |
+| `npm run type-check` | Type checks the app |
 | `npm run lint` | Lints with zero warnings allowed |
 | `npm run format` | Formats with Prettier |
-| `npm run build` | Type checks and builds for production into `apps/web/dist` |
+| `npm run build` | Type checks and builds for production into `dist` |
 | `npm run preview` | Serves the production build locally |
 
 A pre-commit hook runs lint-staged, the type check and the tests.
@@ -129,13 +129,13 @@ Installed versions: `docs/ARCHITECTURE.md`.
 ## Layout
 
 ```
-apps/
-  web/                 the Logeek web app
-    src/pages/         the builder screen
-    src/domain/        logic cards: models, logic, store, components
-    src/shared/        generic pieces: buttons, panels, toasts, pixel icons
-    src/lib/           pure helpers: ids, base64url, JSON tokens
-    src/styles/        theme tokens, mixins, global styles
+src/
+  pages/               the builder screen
+  domain/              logic cards: models, logic, store, components
+  shared/              generic pieces: buttons, panels, toasts, pixel icons
+  lib/                 pure helpers: ids, base64url, JSON tokens
+  styles/              theme tokens, mixins, global styles
+public/                static files served as they are (the favicon)
 docs/                  architecture and decisions
 .claude/               rules, hooks, agents and skills for AI assistants
 ```
