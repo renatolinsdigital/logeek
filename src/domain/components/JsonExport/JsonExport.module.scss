@@ -1,0 +1,36 @@
+@use 'theme' as *;
+@use 'mixins' as *;
+
+.export {
+  display: grid;
+  gap: $space-3;
+}
+
+.note {
+  margin: 0;
+  color: $color-muted;
+  font-size: $text-sm;
+}
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: $space-3 $space-5;
+}
+
+.screen {
+  border: $border;
+  @include crt-screen;
+
+  pre {
+    max-height: min(24rem, 50dvh);
+  }
+}
+
+.buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: $space-3;
+}

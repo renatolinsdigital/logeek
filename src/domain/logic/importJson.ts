@@ -79,7 +79,7 @@ function toBoardCards(decisions: unknown): unknown[] {
 }
 
 /**
- * Rebuilds a board from JSON in the Logeek format (what the JSON panel
+ * Rebuilds a board from JSON in the Logeek format (what the JSON modal
  * exports). The document is turned into the board shape a share link
  * carries and goes through the same `checkBoard`, so both paths share one
  * gate. The format has no colours or test values: cards take the palette in

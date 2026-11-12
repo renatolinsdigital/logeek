@@ -1,5 +1,12 @@
 # Decisions
 
+| Number | Decision | Status |
+| --- | --- | --- |
+| [0001](0001-frontend-only.md) | A frontend-only app, with the board in the browser | Accepted; its layout superseded by 0002 |
+| [0002](0002-single-app-at-root.md) | One app at the repository root | Accepted |
+
+## Adding one
+
 One file per decision that a newcomer would otherwise question: a framework,
 a database, a provider, a departure from a dev-boilerplate guide. Name it
 `NNNN-short-title.md`, numbered in order, and never edit an accepted one:

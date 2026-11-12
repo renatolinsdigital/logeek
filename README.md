@@ -2,155 +2,181 @@
 
 **Stack logic cards. Get JSON and a flowchart your whole team can read.**
 
-Logeek is a visual logic builder with an 80s arcade soul. You name the
-variables a system knows (`speed`, `age`, `country`), put them against
-logical operators on colourful cards (`speed > 100`, `age >= 18`), and
-Logeek turns the deck into a logic JSON and a decision flowchart, live, as
-you type.
+![React 19](https://img.shields.io/badge/React-19-149eca?logo=react&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-strict-3178c6?logo=typescript&logoColor=white)
+![Vite 8](https://img.shields.io/badge/Vite-8-646cff?logo=vite&logoColor=white)
+![Zustand](https://img.shields.io/badge/state-Zustand-443e38)
+![Tests](https://img.shields.io/badge/tests-Vitest-6e9f18?logo=vitest&logoColor=white)
+![No backend](https://img.shields.io/badge/backend-none-ff3fa4)
 
-## Built for teams who need to talk about logic
+![Logeek: variables, a logic card and the live flowchart with a test run](docs/print/print.png)
 
-Every system has rules hiding in it: who sees the promo, when a ride
-unlocks, which order gets flagged. Those rules are usually argued about in
-chat threads and then rewritten by a developer who was not in the room.
+Logeek is a visual rule builder with an 80s arcade look. Name the facts a
+system knows, stack cards like `age >= 18 AND has_ticket is true`, and get
+two things back, live: **JSON a rule engine can run** and **a flowchart a
+person can follow**. Type test values and the path the decision takes lights
+up.
 
-Logeek gives the whole team one shared picture of the logic:
+No account, no server, no install for whoever opens the link.
 
-- **Product and business people** build and read the cards in plain words,
-  no code needed.
-- **Developers** copy the same logic as JSON, ready for a rule engine.
-- **QA and support** type test values and watch the decision path light up,
-  to check "what happens when...?" in seconds.
-- **Everyone** shares the exact board with one link and talks about the same
-  thing in planning, refinement, reviews and incident calls.
+## Why it exists
+
+Business rules (who sees the promo, when a ride unlocks, which order gets
+flagged) are usually argued about in chat and then rewritten by a developer
+who was not in the room. Logeek puts the rule itself on the table:
+
+| Who | What they get |
+| --- | --- |
+| Product and business | Build and read the rules in plain words, no code |
+| Developers | The same rules as JSON, ready for a rule engine |
+| QA and support | Type values, see which card answers, in seconds |
+| Everyone | One link that opens the exact same board |
+
+## How it works
+
+1. **Name your variables.** Number, text or true/false: `age`, `country`,
+   `has_ticket`.
+2. **Stack logic cards.** Each card says IF all (AND) or any (OR) of its
+   conditions hold, THEN an answer. Cards are checked top to bottom; the first
+   that passes answers, and **Otherwise** covers the rest.
+3. **Test the flow.** Type values and watch the flowchart light the path,
+   while every card shows whether it passed.
 
 ## Features
 
-- **Variables** of three types: number, text and true/false. Rename them in
-  place; a variable in use cannot be deleted by accident.
-- **Logic cards**: each card says IF all (AND) or any (OR) of its conditions
-  are true, THEN an answer. Conditions can be grouped, such as
+- **Variables** of three types: number, text and true/false. Rename in place;
+  a variable still in use cannot be deleted by accident.
+- **Logic cards** with nested groups:
   `hasTicket is true OR (country is "BR" AND coins > 10)`.
 - **Operators per type**: `>`, `>=`, `<`, `<=`, `=`, `≠` for numbers; `is`,
   `is not`, `contains` for text; `is`, `is not` for true/false.
-- **Ordered decisions**: cards are checked first to last, the first card
-  that passes answers, and an **Otherwise** answer covers the rest.
-- **Three example cards**: a new board starts empty, and the Examples button
-  loads them to start from.
-- **Flowchart**: the deck drawn as a decision chain (YES to the answer, NO to
-  the next card), updated live.
-- **Test run**: type values for each variable; the flowchart lights the path
-  taken, every card shows whether it passed, and the answer is shown on top.
+- **Ordered decisions**: first passing card answers, **Otherwise** answers
+  when none does.
+- **Live flowchart**: the deck drawn as a decision chain (YES to the answer,
+  NO to the next card).
+- **Test run**: type values per variable; the chart lights the path, each card
+  shows its result and the answer stays in view.
+- **JSON both ways**: one dialog turns cards into JSON, or rebuilds cards from
+  pasted JSON (with Undo).
 - **Two JSON formats**: the readable Logeek format, or a single
-  [JsonLogic](https://jsonlogic.com) rule that any JsonLogic library can run.
+  [JsonLogic](https://jsonlogic.com) rule any JsonLogic library can run.
   Pretty or compact, with Copy and Download.
-- **Import JSON**: paste Logeek JSON (from this app or written by hand) into
-  the Import dialog of the JSON panel and the cards are rebuilt from it, with
-  Undo. Colours and test values start fresh, since the format has neither.
 - **Share link**: the whole board (cards, variables, test values) packed into
-  a URL. Nothing is uploaded: the board travels inside the link.
-- **Saved automatically** in your browser. Removing a card, clearing the
-  board or loading a link can be undone from the toast.
-- **Colourful brutalism**: thick borders, hard shadows, pixel fonts and CRT
-  screens, keyboard friendly and screen reader labelled.
+  the URL. Nothing is uploaded.
+- **Autosave** in the browser, with Undo for removing a card, clearing the
+  board or loading a link.
+- **Examples** on demand: a new board starts empty, one click loads three
+  sample cards.
+- **Colourful brutalism**: thick borders, hard shadows, pixel fonts, CRT
+  screens. Keyboard friendly and labelled for screen readers.
 
-## The JSON
+## The output
 
-The example board, in the Logeek format (trimmed to one card):
+The board in the screenshot, in the Logeek format:
 
 ```json
 {
-  "variables": { "speed": "number", "coins": "number", "age": "number" },
+  "variables": { "age": "number", "has_ticket": "boolean" },
   "decisions": [
     {
-      "name": "Turbo mode",
+      "name": "Gate Verification",
       "if": {
         "all": [
-          { "variable": "speed", "operator": ">", "value": 100 },
-          { "variable": "coins", "operator": ">=", "value": 3 }
+          { "variable": "age", "operator": ">=", "value": 18 },
+          { "variable": "has_ticket", "operator": "==", "value": true }
         ]
       },
-      "then": "Unlock the turbo boost"
+      "then": "Enter the show"
     }
   ],
-  "otherwise": "Insert coin to continue"
+  "otherwise": "Permission denied"
 }
 ```
 
-The same logic as JsonLogic, one `if` chain that ends with the fallback:
+The same logic as JsonLogic, one `if` chain ending in the fallback:
 
 ```json
 {
   "if": [
-    { "and": [{ ">": [{ "var": "speed" }, 100] }, { ">=": [{ "var": "coins" }, 3] }] },
-    "Unlock the turbo boost",
-    "Insert coin to continue"
+    { "and": [{ ">=": [{ "var": "age" }, 18] }, { "==": [{ "var": "has_ticket" }, true] }] },
+    "Enter the show",
+    "Permission denied"
   ]
 }
 ```
 
-Run it with any JsonLogic library, passing the variables as data:
-`jsonLogic.apply(rule, { speed: 120, coins: 5 })`.
+```js
+jsonLogic.apply(rule, { age: 19, has_ticket: true }); // "Enter the show"
+```
 
-## Getting started
+## Under the hood
 
-Requirements: Node 24 (the version in `.nvmrc`) and npm.
+- **Frontend only.** The board lives in localStorage and travels in the URL
+  fragment (`#board=...`), which browsers never send to a server. Hosting is
+  a folder of static files.
+- **One gate for untrusted input.** Share links, saved storage and imported
+  JSON all pass the same validator, which checks shape and size limits and
+  rebuilds every id before anything reaches the store.
+- **Pure logic core.** Evaluation, both exporters, the importer and the
+  share codec are plain functions with no React in them, each with its own
+  tests.
+- **Strict layering.** `pages` use `domain`, `domain` uses `shared`, all use
+  `lib`. Generic components never know about logic cards.
+- **Quality gates.** TypeScript strict, ESLint with zero warnings, Prettier,
+  and a pre-commit hook that runs lint, type check and tests.
+
+The full picture: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
+
+## Run it
+
+Requirements: Node 24 (see `.nvmrc`) and npm.
 
 ```bash
 npm ci
 npm run dev
 ```
 
-Then open the address Vite prints (usually http://localhost:5173).
-
-## Scripts
+Open the address Vite prints (usually http://localhost:5173) and press
+**Examples** to start from a sample board.
 
 | Script | What it does |
 | --- | --- |
-| `npm run dev` | Starts the web app with hot reload |
-| `npm test` | Runs every test once (Vitest and Testing Library) |
-| `npm run type-check` | Type checks the app |
-| `npm run lint` | Lints with zero warnings allowed |
-| `npm run format` | Formats with Prettier |
-| `npm run build` | Type checks and builds for production into `dist` |
-| `npm run preview` | Serves the production build locally |
+| `npm run dev` | Web app with hot reload |
+| `npm test` | Every test once (Vitest and Testing Library) |
+| `npm run type-check` | TypeScript check |
+| `npm run lint` | ESLint, zero warnings allowed |
+| `npm run format` | Prettier |
+| `npm run build` | Type check and production build into `dist` |
+| `npm run preview` | Serves the production build |
 
-A pre-commit hook runs lint-staged, the type check and the tests.
-
-## Stack
-
-| Part | Choice |
-| --- | --- |
-| Web app | React 19 with Vite 8 |
-| State | Zustand 5, saved to localStorage |
-| Language and styles | TypeScript, SCSS modules |
-| Fonts | Press Start 2P and Space Mono, self-hosted |
-| Tests | Vitest, Testing Library |
-
-Installed versions: `docs/ARCHITECTURE.md`.
-
-## Layout
+## Project structure
 
 ```
 src/
-  pages/               the builder screen
-  domain/              logic cards: models, logic, store, components
-  shared/              generic pieces: buttons, panels, toasts, pixel icons
-  lib/                 pure helpers: ids, base64url, JSON tokens
-  styles/              theme tokens, mixins, global styles
-public/                static files served as they are (the favicon)
-docs/                  architecture and decisions
-.claude/               rules, hooks, agents and skills for AI assistants
+  pages/              the builder screen
+  domain/             logic cards: models, pure logic, store, hooks, components
+  shared/             generic UI: Button, Panel, Modal, Toast, PixelIcon
+  lib/                pure helpers: ids, base64url, JSON tokens
+  styles/             theme tokens, mixins, global styles
+docs/
+  USER-GUIDE.md       how to use the app, stage by stage
+  ARCHITECTURE.md     big picture, data flow, model, files, stack
+  decisions/          one file per architecture decision
+  print/              screenshots
+.claude/              rules, hooks, agents and skills for AI assistants
 ```
 
-## Working with an AI assistant
+## Documentation
 
-This project follows [dev-boilerplate](https://github.com/renatolinsdigital/dev-boilerplate)
-0.2.0. `AGENTS.md` and `.claude/` hold the rules, hooks, agents and skills;
-Claude Code loads them on its own. The assistant asks before installing
-anything and before anything that leaves the machine.
+| I want to | Read |
+| --- | --- |
+| Use every part of the app | [User guide](docs/USER-GUIDE.md) |
+| Understand how the code fits together | [Architecture](docs/ARCHITECTURE.md) |
+| Know why it has no backend | [0001: frontend only](docs/decisions/0001-frontend-only.md) |
+| Know why it is one app at the root | [0002: single app at root](docs/decisions/0002-single-app-at-root.md) |
+| See what changed | [Changelog](CHANGELOG.md) |
+| Change the code with an AI assistant | [`AGENTS.md`](AGENTS.md), then `.claude/rules/palace.md` |
 
 ## Credits
 
 Created by [Renato Lins](https://www.linkedin.com/in/renatolinsdigital/).
-Inspired by [Rules Builder](https://github.com/renatolinsdigital/rules-builder).

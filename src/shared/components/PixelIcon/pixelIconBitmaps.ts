@@ -150,6 +150,16 @@ export const PIXEL_ICON_BITMAPS = {
     '########',
     '........',
   ],
+  braces: [
+    '.##..##.',
+    '.#....#.',
+    '.#....#.',
+    '#......#',
+    '.#....#.',
+    '.#....#.',
+    '.##..##.',
+    '........',
+  ],
 } as const satisfies Record<string, readonly string[]>;
 
 export type PixelIconName = keyof typeof PIXEL_ICON_BITMAPS;

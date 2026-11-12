@@ -22,8 +22,8 @@ Open these first and follow the code from there; do not survey the tree.
 | The page layout | `src/pages/BuilderPage/BuilderPage.tsx` |
 | A component | `src/domain/components/<Name>/` or `src/shared/components/<Name>/` |
 | A new operator or variable type | `src/domain/models/logic.model.ts`, then `domain/logic/operators.ts`, `evaluate.ts`, `exportJson.ts`, `boardCodec.ts` |
-| The JSON output | `src/domain/logic/exportJson.ts` and its test |
-| Importing JSON | `src/domain/logic/importJson.ts`, `src/domain/components/ImportJsonModal/` |
+| The JSON output | `src/domain/logic/exportJson.ts` and its test, `src/domain/components/JsonExport/` |
+| Importing JSON | `src/domain/logic/importJson.ts`, `src/domain/components/JsonModal/`, `JsonImportForm/` |
 | The flowchart | `src/domain/components/Flowchart/` |
 | State and actions | `src/domain/store/useBoardStore.ts` |
 | The example cards | `src/domain/logic/examples.ts` |

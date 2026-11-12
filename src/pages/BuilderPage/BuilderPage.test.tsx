@@ -92,15 +92,25 @@ describe('BuilderPage', () => {
     expect(screen.getByRole('article', { name: 'Card 1: Turbo mode' })).toBeInTheDocument();
   });
 
-  it('switches the JSON to JsonLogic', async () => {
+  it('shows the cards as JSON in the JSON modal and switches it to JsonLogic', async () => {
     const user = userEvent.setup();
     render(<BuilderPage />);
-    const jsonRegion = screen.getByRole('region', { name: 'Board as logeek JSON' });
+    expect(screen.queryByRole('region', { name: /JSON$/ })).not.toBeInTheDocument();
+
+    await user.click(screen.getByRole('button', { name: 'JSON' }));
+    const dialog = screen.getByRole('dialog', { name: 'JSON' });
+    expect(within(dialog).getByRole('button', { name: 'Cards to JSON' })).toHaveAttribute(
+      'aria-pressed',
+      'true',
+    );
+    const jsonRegion = within(dialog).getByRole('region', { name: 'Board as logeek JSON' });
     expect(jsonRegion).toHaveTextContent('"decisions"');
 
-    await user.click(screen.getByRole('button', { name: 'JsonLogic' }));
+    await user.click(within(dialog).getByRole('button', { name: 'JsonLogic' }));
 
-    const jsonLogicRegion = screen.getByRole('region', { name: 'Board as jsonlogic JSON' });
+    const jsonLogicRegion = within(dialog).getByRole('region', {
+      name: 'Board as jsonlogic JSON',
+    });
     expect(jsonLogicRegion).toHaveTextContent('"if"');
     expect(jsonLogicRegion).not.toHaveTextContent('"decisions"');
   });
@@ -120,8 +130,9 @@ describe('BuilderPage', () => {
       otherwise: 'Try again',
     });
 
-    await user.click(screen.getByRole('button', { name: 'Import' }));
-    const dialog = screen.getByRole('dialog', { name: 'Import JSON' });
+    await user.click(screen.getByRole('button', { name: 'JSON' }));
+    const dialog = screen.getByRole('dialog', { name: 'JSON' });
+    await user.click(within(dialog).getByRole('button', { name: 'JSON to cards' }));
     const jsonField = within(dialog).getByLabelText('Logeek JSON');
     expect(jsonField).toHaveFocus();
     await user.click(jsonField);
@@ -141,8 +152,9 @@ describe('BuilderPage', () => {
     const user = userEvent.setup();
     render(<BuilderPage />);
 
-    await user.click(screen.getByRole('button', { name: 'Import' }));
-    const dialog = screen.getByRole('dialog', { name: 'Import JSON' });
+    await user.click(screen.getByRole('button', { name: 'JSON' }));
+    const dialog = screen.getByRole('dialog', { name: 'JSON' });
+    await user.click(within(dialog).getByRole('button', { name: 'JSON to cards' }));
     await user.click(within(dialog).getByLabelText('Logeek JSON'));
     await user.paste('{ "if": [true, "Go", "Wait"] }');
     await user.click(within(dialog).getByRole('button', { name: 'Import cards' }));
@@ -153,7 +165,7 @@ describe('BuilderPage', () => {
     expect(within(dialog).getByLabelText('Logeek JSON')).toHaveAttribute('aria-invalid', 'true');
     expect(screen.getAllByRole('article')).toHaveLength(3);
 
-    await user.click(within(dialog).getByRole('button', { name: 'Close import' }));
+    await user.click(within(dialog).getByRole('button', { name: 'Close JSON' }));
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
   });
 

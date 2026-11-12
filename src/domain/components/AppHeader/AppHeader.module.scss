@@ -65,14 +65,13 @@
 
 .steps {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
   margin: 0;
   padding: 0;
   list-style: none;
   border-top: $border;
 
-  @include respond-to(md) {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+  @include respond-to(sm) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 
@@ -92,24 +91,11 @@
   }
 
   & + & {
-    border-left: $border;
-  }
-
-  &:nth-child(3) {
-    border-left: 0;
     border-top: $border;
 
-    @include respond-to(md) {
+    @include respond-to(sm) {
+      border-top: 0;
       border-left: $border;
-      border-top: 0;
-    }
-  }
-
-  &:nth-child(4) {
-    border-top: $border;
-
-    @include respond-to(md) {
-      border-top: 0;
     }
   }
 }

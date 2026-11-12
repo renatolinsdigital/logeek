@@ -1,0 +1,7 @@
+@use 'theme' as *;
+@use 'mixins' as *;
+
+.body {
+  display: grid;
+  gap: $space-4;
+}

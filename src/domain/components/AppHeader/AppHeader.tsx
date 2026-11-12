@@ -7,10 +7,9 @@ const STEPS = [
   { color: 'cyan', text: 'Name your variables' },
   { color: 'pink', text: 'Stack logic cards' },
   { color: 'lime', text: 'Test the flow' },
-  { color: 'yellow', text: 'Copy the JSON' },
 ] as const;
 
-/** The title screen: brand, the four steps, and the board-wide actions. */
+/** The title screen: brand, the three steps, and the board-wide actions. */
 function AppHeader() {
   const copyShareLink = useCopyShareLink();
 

@@ -1,9 +1,35 @@
 @use 'theme' as *;
 @use 'mixins' as *;
 
+// The last stage is the payoff, so it wears a double shadow in the run colours.
+// Panel's own stylesheet loads first (FlowchartPanel imports it), so this wins.
+.panel {
+  box-shadow:
+    6px 6px 0 $color-pink,
+    12px 12px 0 $color-lime;
+}
+
 .layout {
   display: grid;
   gap: $space-5;
+
+  @include respond-to(lg) {
+    grid-template-columns: minmax(16rem, 22rem) minmax(0, 1fr);
+    align-items: start;
+    gap: $space-6;
+  }
+}
+
+// Beside the chart, the values and the answer stay in view while a long
+// chart scrolls past.
+.controls {
+  display: grid;
+  gap: $space-5;
+
+  @include respond-to(lg) {
+    position: sticky;
+    top: $space-4;
+  }
 }
 
 .result {

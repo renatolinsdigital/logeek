@@ -28,7 +28,7 @@ Depth: `{boilerplate}/guides/frontend/react.md`,
   native `<dialog>`. jsdom has no `showModal` or `close`, so
   `src/test/setup.ts` stubs them; a test finds it with `getByRole('dialog')`.
 - A child's focus effect inside `Modal` runs after the dialog opens (the
-  Modal opens in a layout effect), which is how `ImportJsonModal` focuses its
+  Modal opens in a layout effect), which is how `JsonImportForm` focuses its
   field.
 - Driving the page over the DevTools protocol (Chrome's
   `--remote-debugging-port`, Node's built-in `WebSocket`) can click, type

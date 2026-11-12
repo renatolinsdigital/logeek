@@ -1,16 +1,21 @@
 import { useId, useMemo, useState } from 'react';
-import { Panel, PixelIcon } from '@/shared/components';
+import { Button, Panel, PixelIcon } from '@/shared/components';
 import { getCardRunState, runBoard } from '@/domain/logic';
 import { useBoard, useBoardStore } from '@/domain/store';
+import { JsonModal } from '../JsonModal';
 import { LogicCard } from '../LogicCard';
 import styles from './CardDeck.module.scss';
 
-/** Stage 2: the cards, checked in order, then the fallback answer and the button for a new card. */
+/**
+ * Stage 2: the cards, checked in order, then the fallback answer and the
+ * button for a new card. Its JSON button opens the cards as JSON, both ways.
+ */
 function CardDeck() {
   const board = useBoard();
   const addCard = useBoardStore((state) => state.addCard);
   const setOtherwise = useBoardStore((state) => state.setOtherwise);
   const [newCardId, setNewCardId] = useState<string | null>(null);
+  const [isJsonOpen, setIsJsonOpen] = useState(false);
   const run = useMemo(() => runBoard(board), [board]);
   const otherwiseId = useId();
 
@@ -19,6 +24,11 @@ function CardDeck() {
       eyebrow="Stage 2"
       title="Logic cards"
       description="Cards are checked from first to last. The first card whose conditions pass gives the answer; if none does, the fallback answers."
+      actions={
+        <Button icon="braces" onClick={() => setIsJsonOpen(true)}>
+          JSON
+        </Button>
+      }
     >
       <ol className={styles.deck}>
         {board.cards.map((card, cardIndex) => (
@@ -58,6 +68,7 @@ function CardDeck() {
           </button>
         </li>
       </ol>
+      {isJsonOpen && <JsonModal onClose={() => setIsJsonOpen(false)} />}
     </Panel>
   );
 }

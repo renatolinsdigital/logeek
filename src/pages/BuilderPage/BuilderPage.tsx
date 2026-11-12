@@ -4,13 +4,12 @@ import {
   AppHeader,
   CardDeck,
   FlowchartPanel,
-  JsonPanel,
   VariablesPanel,
 } from '@/domain/components';
 import { useLoadSharedBoard } from '@/domain/hooks';
 import styles from './BuilderPage.module.scss';
 
-/** The one screen: variables, cards, then the flowchart and the JSON side by side on wide screens. */
+/** The one screen: variables, cards, then the flowchart across the whole width. */
 function BuilderPage() {
   useLoadSharedBoard();
 
@@ -20,10 +19,7 @@ function BuilderPage() {
       <main className={styles.main}>
         <VariablesPanel />
         <CardDeck />
-        <div className={styles.outputs}>
-          <FlowchartPanel />
-          <JsonPanel />
-        </div>
+        <FlowchartPanel />
       </main>
       <AppFooter />
       <ToastViewport dismissLabel="Dismiss message" />

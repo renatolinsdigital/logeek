@@ -21,13 +21,3 @@
     padding: $space-7 $space-5 0;
   }
 }
-
-.outputs {
-  display: grid;
-  gap: $space-6;
-  align-items: start;
-
-  @include respond-to(xl) {
-    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
-  }
-}

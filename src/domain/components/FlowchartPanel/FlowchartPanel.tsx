@@ -6,7 +6,10 @@ import { Flowchart } from '../Flowchart';
 import { TestRunInputs } from '../TestRunInputs';
 import styles from './FlowchartPanel.module.scss';
 
-/** Stage 3: the test values, the answer they produce, and the flowchart with the path lit. */
+/**
+ * Stage 3, the finale: the test values and the answer they produce beside the
+ * flowchart with the path lit, across the whole page width.
+ */
 function FlowchartPanel() {
   const board = useBoard();
   const run = useMemo(() => runBoard(board), [board]);
@@ -19,24 +22,27 @@ function FlowchartPanel() {
       eyebrow="Stage 3"
       title="Flowchart"
       description="Try values and watch the decision path light up."
+      className={styles.panel}
     >
       <div className={styles.layout}>
-        <TestRunInputs variables={board.variables} />
+        <div className={styles.controls}>
+          <TestRunInputs variables={board.variables} />
 
-        <output className={styles.result}>
-          <PixelIcon name="play" size={24} className={styles.resultIcon} />
-          <span className={styles.resultText}>
-            <span className={styles.resultLabel}>Answer</span>
-            <strong className={styles.resultValue}>
-              {run.outcome.trim() || '(no answer yet)'}
-            </strong>
-            <span className={styles.resultSource}>
-              {matchedCard
-                ? `from card #${matchedPosition}, ${matchedCard.title.trim() || 'Untitled card'}`
-                : 'no card passed, so the fallback answers'}
+          <output className={styles.result}>
+            <PixelIcon name="play" size={24} className={styles.resultIcon} />
+            <span className={styles.resultText}>
+              <span className={styles.resultLabel}>Answer</span>
+              <strong className={styles.resultValue}>
+                {run.outcome.trim() || '(no answer yet)'}
+              </strong>
+              <span className={styles.resultSource}>
+                {matchedCard
+                  ? `from card #${matchedPosition}, ${matchedCard.title.trim() || 'Untitled card'}`
+                  : 'no card passed, so the fallback answers'}
+              </span>
             </span>
-          </span>
-        </output>
+          </output>
+        </div>
 
         <div className={styles.chart}>
           <Flowchart board={board} run={run} />
