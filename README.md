@@ -9,7 +9,7 @@
 ![Tests](https://img.shields.io/badge/tests-Vitest-6e9f18?logo=vitest&logoColor=white)
 ![No backend](https://img.shields.io/badge/backend-none-ff3fa4)
 
-![Logeek: variables, a logic card and the live flowchart with a test run](docs/print/print.png)
+![Logeek: variables, a logic card and the live flowchart with a test run](docs/print/app_print.png)
 
 Logeek is a visual rule builder with an 80s arcade look. Name the facts a
 system knows, stack cards like `age >= 18 AND has_ticket is true`, and get
@@ -158,6 +158,7 @@ src/
   shared/             generic UI: Button, Panel, Modal, Toast, PixelIcon
   lib/                pure helpers: ids, base64url, JSON tokens
   styles/             theme tokens, mixins, global styles
+scripts/              build-icons.mjs: the Logeek mark to SVG, favicon.ico, touch icon
 docs/
   USER-GUIDE.md       how to use the app, stage by stage
   ARCHITECTURE.md     big picture, data flow, model, files, stack

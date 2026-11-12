@@ -19,6 +19,11 @@ Depth: `{boilerplate}/guides/frontend/react.md`,
   accessible text is a prop (`ToastViewport` takes `dismissLabel`).
 - Icons are 8 by 8 bitmaps in `shared/components/PixelIcon/pixelIconBitmaps.ts`;
   add one there, `#` for a lit pixel.
+- The Logeek mark is the 16 by 16 bitmap in `scripts/build-icons.mjs`, which
+  writes `src/assets/logeek-mark.svg` (header and SVG favicon),
+  `public/favicon.ico` and `public/apple-touch-icon.png`. Edit the bitmap and
+  run `npm run icons`; never edit those files by hand. `src/assets/logo.svg`
+  is the author's own mark, for the footer credit only.
 - `ConditionRow` lays itself out with a container query, because the same
   row sits in a wide card on desktop and inside a nested group on a phone.
 - Undo for removing a card uses the store's `lastRemovedCard`; Undo for

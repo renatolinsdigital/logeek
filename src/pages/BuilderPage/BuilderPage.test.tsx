@@ -169,6 +169,13 @@ describe('BuilderPage', () => {
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
   });
 
+  it('names the page heading Logeek alone, with the mark beside it left unread', () => {
+    render(<BuilderPage />);
+
+    expect(screen.getByRole('heading', { level: 1 })).toHaveAccessibleName('Logeek');
+    expect(screen.queryAllByRole('img')).toHaveLength(0);
+  });
+
   it('credits the author in a new tab', () => {
     render(<BuilderPage />);
 

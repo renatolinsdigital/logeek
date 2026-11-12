@@ -1,3 +1,4 @@
+import markUrl from '@/assets/logeek-mark.svg';
 import { Button, showToast } from '@/shared/components';
 import { useCopyShareLink } from '@/domain/hooks';
 import { selectBoard, useBoardStore } from '@/domain/store';
@@ -29,7 +30,10 @@ function AppHeader() {
           <p className={styles.coin} aria-hidden="true">
             Insert coin
           </p>
-          <h1 className={styles.title}>Logeek</h1>
+          <h1 className={styles.title}>
+            <img className={styles.mark} src={markUrl} alt="" width={64} height={64} />
+            Logeek
+          </h1>
           <p className={styles.tagline}>
             Stack logic cards. Get JSON and a flowchart your whole team can read.
           </p>

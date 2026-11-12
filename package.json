@@ -17,6 +17,7 @@
     "type-check": "tsc --noEmit",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
+    "icons": "node scripts/build-icons.mjs",
     "test:hooks": "node --test \".claude/hooks/*.test.mjs\"",
     "prepare": "husky"
   },

@@ -8,7 +8,7 @@ function AppFooter() {
   return (
     <footer className={styles.footer}>
       <div className={styles.inner}>
-        <img className={styles.logo} src={logoUrl} alt="Renato Lins logo" width={28} height={40} />
+        <img className={styles.logo} src={logoUrl} alt="" width={28} height={40} />
         <p className={styles.credit}>
           Created by{' '}
           <a className={styles.link} href={AUTHOR_URL} target="_blank" rel="noopener noreferrer">

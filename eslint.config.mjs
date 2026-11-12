@@ -43,8 +43,8 @@ export default defineConfig([
     rules: { 'react-refresh/only-export-components': 'off' },
   },
   {
-    // Config files at the root run on Node.
-    files: ['*.{mjs,ts}'],
+    // Config files at the root and the scripts run on Node.
+    files: ['*.{mjs,ts}', 'scripts/**/*.mjs'],
     languageOptions: { globals: globals.node },
   },
 ]);
